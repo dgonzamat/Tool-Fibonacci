@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "node -e \"const fs=require('fs');['out/opengraph-image','out/twitter-image'].forEach(f=>{if(fs.existsSync(f))fs.renameSync(f,f+'.png')})\"",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
