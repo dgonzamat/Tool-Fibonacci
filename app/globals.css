@@ -35,7 +35,18 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
   body {
     @apply bg-background text-foreground;
+    -webkit-tap-highlight-color: transparent;
+  }
+  img,
+  svg,
+  video {
+    max-width: 100%;
+    height: auto;
   }
 }

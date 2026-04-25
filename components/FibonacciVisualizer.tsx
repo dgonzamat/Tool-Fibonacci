@@ -82,24 +82,25 @@ export default function FibonacciVisualizer() {
       </div>
 
       {/* Header Section */}
-      <div className="relative z-10 p-6 border-b border-yellow-500/20 bg-gradient-to-r from-yellow-900/20 to-transparent">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full shadow-lg">
-              <span className="text-black font-bold text-xl">φ</span>
+      <div className="relative z-10 p-4 sm:p-6 border-b border-yellow-500/20 bg-gradient-to-r from-yellow-900/20 to-transparent">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
+            <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full shadow-lg">
+              <span className="text-black font-bold text-lg sm:text-xl">φ</span>
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-white">Secuencia de Fibonacci</h3>
-              <p className="text-sm text-yellow-300">F(n) = F(n-1) + F(n-2)</p>
+            <div className="min-w-0">
+              <h3 className="text-base sm:text-xl font-bold text-white truncate">Secuencia de Fibonacci</h3>
+              <p className="text-xs sm:text-sm text-yellow-300 font-mono">F(n) = F(n-1) + F(n-2)</p>
             </div>
           </div>
 
           {/* Controls */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
             <Button
               onClick={togglePlayPause}
               variant="outline"
               size="sm"
+              aria-label={isPlaying ? "Pausar" : "Reproducir"}
               className="bg-yellow-600 hover:bg-yellow-700 border-yellow-500 text-black"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -108,6 +109,7 @@ export default function FibonacciVisualizer() {
               onClick={reset}
               variant="outline"
               size="sm"
+              aria-label="Reiniciar"
               className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-white"
             >
               <RotateCcw className="w-4 h-4" />
@@ -117,8 +119,8 @@ export default function FibonacciVisualizer() {
       </div>
 
       {/* Main Visualization Area */}
-      <div className="relative p-8">
-        <div className="grid lg:grid-cols-2 gap-8">
+      <div className="relative p-4 sm:p-6 md:p-8">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {/* Spiral Visualization */}
           <div className="relative">
             <div className="aspect-square bg-gray-800/30 rounded-xl border border-yellow-500/20 overflow-hidden">
@@ -185,11 +187,11 @@ export default function FibonacciVisualizer() {
           {/* Sequence Display */}
           <div className="space-y-6">
             {/* Current Number Highlight */}
-            <div className="bg-gradient-to-r from-yellow-900/40 to-yellow-800/40 rounded-xl p-6 border border-yellow-500/30">
+            <div className="bg-gradient-to-r from-yellow-900/40 to-yellow-800/40 rounded-xl p-4 sm:p-6 border border-yellow-500/30">
               <div className="text-center">
-                <div className="text-sm text-yellow-300 mb-2">Número Actual</div>
-                <div className="text-4xl font-bold text-yellow-400 mb-2">{sequence[activeIndex]}</div>
-                <div className="text-sm text-gray-300">
+                <div className="text-xs sm:text-sm text-yellow-300 mb-2">Número Actual</div>
+                <div className="text-3xl sm:text-4xl font-bold text-yellow-400 mb-2 break-all">{sequence[activeIndex]}</div>
+                <div className="text-xs sm:text-sm text-gray-300">
                   F({activeIndex}) ={" "}
                   {activeIndex > 1 ? `F(${activeIndex - 1}) + F(${activeIndex - 2})` : activeIndex === 1 ? "1" : "0"}
                 </div>
@@ -202,15 +204,15 @@ export default function FibonacciVisualizer() {
             </div>
 
             {/* Sequence Grid */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3">
               {sequence.slice(0, 12).map((num, i) => (
                 <div
                   key={i}
                   className={cn(
-                    "relative flex items-center justify-center rounded-lg transition-all duration-500 border font-mono text-sm",
-                    "h-14 w-full cursor-pointer group",
+                    "relative flex items-center justify-center rounded-lg transition-all duration-500 border font-mono text-xs sm:text-sm",
+                    "h-12 sm:h-14 w-full cursor-pointer group overflow-hidden",
                     i === activeIndex
-                      ? "bg-gradient-to-r from-yellow-500 to-yellow-600 text-black border-yellow-400 scale-110 shadow-lg shadow-yellow-500/50"
+                      ? "bg-gradient-to-r from-yellow-500 to-yellow-600 text-black border-yellow-400 scale-105 shadow-lg shadow-yellow-500/50"
                       : i < activeIndex
                         ? "bg-gradient-to-r from-green-600 to-green-700 text-white border-green-500"
                         : "bg-gray-800/80 text-yellow-500 border-yellow-500/30 hover:border-yellow-500/50 hover:bg-gray-700/80",

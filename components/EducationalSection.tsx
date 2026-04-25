@@ -37,12 +37,12 @@ export default function EducationalSection() {
             generalmente comenzando con 0 y 1. La secuencia comienza:
           </p>
 
-          <div className="flex flex-wrap items-center justify-center p-4 bg-gray-800/50 rounded-md gap-2 border border-gray-700">
+          <div className="flex flex-wrap items-center justify-center p-3 sm:p-4 bg-gray-800/50 rounded-md gap-1.5 sm:gap-2 border border-gray-700">
             {sequence.slice(0, 12).map((num, index) => (
               <div
                 key={index}
                 className={cn(
-                  "px-3 py-2 rounded-md transition-all duration-300 text-center min-w-[50px] font-mono",
+                  "px-2 sm:px-3 py-1.5 sm:py-2 rounded-md transition-all duration-300 text-center min-w-[40px] sm:min-w-[50px] font-mono text-sm sm:text-base",
                   index % 2 === 0
                     ? "bg-gray-700 text-gray-300"
                     : "bg-yellow-500/20 text-yellow-500 border border-yellow-500/30",
@@ -82,8 +82,8 @@ export default function EducationalSection() {
             naturaleza.
           </p>
 
-          <div className="bg-gray-800 p-4 rounded-md text-center border border-gray-700">
-            <span className="text-xl font-mono text-yellow-500">φ = (1 + √5)/2 ≈ {goldenRatio.toFixed(8)}...</span>
+          <div className="bg-gray-800 p-3 sm:p-4 rounded-md text-center border border-gray-700 overflow-x-auto">
+            <span className="text-base sm:text-xl font-mono text-yellow-500 break-all">φ = (1 + √5)/2 ≈ {goldenRatio.toFixed(8)}...</span>
           </div>
 
           <p className="text-gray-300 leading-relaxed">
@@ -144,9 +144,9 @@ export default function EducationalSection() {
   const activeTopic = topics.find((topic) => topic.id === activeTab)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
       <div className="lg:col-span-1">
-        <h3 className="text-xl text-yellow-500 mb-4">Conceptos Matemáticos</h3>
+        <h3 className="text-lg sm:text-xl text-yellow-500 mb-4">Conceptos Matemáticos</h3>
 
         <div className="space-y-3">
           {topics.map((topic) => (
@@ -154,14 +154,14 @@ export default function EducationalSection() {
               key={topic.id}
               variant="ghost"
               className={cn(
-                "w-full justify-start p-4 h-auto text-left",
+                "w-full justify-start p-3 sm:p-4 h-auto text-left whitespace-normal",
                 activeTab === topic.id
                   ? "bg-yellow-500/20 border border-yellow-500/50"
                   : "border border-gray-700 hover:border-yellow-500/30 hover:bg-yellow-500/5",
               )}
               onClick={() => setActiveTab(topic.id)}
             >
-              <div className="flex items-center space-x-3 w-full">
+              <div className="flex items-center space-x-3 w-full min-w-0">
                 <div
                   className={cn(
                     "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
@@ -171,7 +171,7 @@ export default function EducationalSection() {
                   {topic.icon}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className={cn("font-medium", activeTab === topic.id ? "text-yellow-500" : "text-white")}>
+                  <h4 className={cn("font-medium text-sm sm:text-base", activeTab === topic.id ? "text-yellow-500" : "text-white")}>
                     {topic.title}
                   </h4>
                   <p className="text-xs text-gray-400 mt-1 line-clamp-2">{topic.description}</p>
@@ -215,24 +215,24 @@ export default function EducationalSection() {
         </div>
       </div>
 
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-2 min-w-0">
         <Card className="bg-gray-900/50 border-gray-700">
-          <CardHeader>
-            <div className="flex items-center">
+          <CardHeader className="p-4 sm:p-6">
+            <div className="flex items-center min-w-0">
               {activeTopic?.icon && (
-                <div className="w-10 h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-3 text-black">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-yellow-500 flex items-center justify-center mr-3 text-black flex-shrink-0">
                   {activeTopic.icon}
                 </div>
               )}
-              <CardTitle className="text-white">{activeTopic?.title}</CardTitle>
+              <CardTitle className="text-white text-base sm:text-lg">{activeTopic?.title}</CardTitle>
             </div>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="p-4 sm:p-6 pt-0">
             {activeTopic?.content}
 
-            <div className="mt-8 pt-6 border-t border-gray-700">
-              <h4 className="text-lg text-yellow-500 mb-4">Preguntas Frecuentes</h4>
+            <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-700">
+              <h4 className="text-base sm:text-lg text-yellow-500 mb-4">Preguntas Frecuentes</h4>
 
               <div className="space-y-3">
                 {faqs.map((faq) => (
@@ -240,10 +240,11 @@ export default function EducationalSection() {
                     <CardContent className="p-0">
                       <Button
                         variant="ghost"
-                        className="w-full justify-between p-4 h-auto text-left"
+                        aria-expanded={expandedFaq === faq.id}
+                        className="w-full justify-between p-3 sm:p-4 h-auto text-left whitespace-normal"
                         onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
                       >
-                        <span className="font-medium text-white pr-4">{faq.question}</span>
+                        <span className="font-medium text-white text-sm sm:text-base pr-3 flex-1 min-w-0">{faq.question}</span>
                         <ChevronDown
                           className={cn(
                             "w-5 h-5 transition-transform duration-300 flex-shrink-0",
@@ -253,7 +254,7 @@ export default function EducationalSection() {
                       </Button>
 
                       {expandedFaq === faq.id && (
-                        <div className="p-4 pt-0 border-t border-gray-600 text-sm text-gray-300 leading-relaxed">
+                        <div className="p-3 sm:p-4 pt-3 border-t border-gray-600 text-sm text-gray-300 leading-relaxed">
                           {faq.answer}
                         </div>
                       )}
@@ -265,12 +266,12 @@ export default function EducationalSection() {
           </CardContent>
         </Card>
 
-        <div className="mt-6 p-4 bg-gray-900/50 rounded-md flex items-center justify-between border border-gray-700">
-          <div className="flex items-center">
-            <BookOpen className="w-5 h-5 text-yellow-500 mr-2" />
-            <span className="text-gray-300">¿Quieres aprender más sobre las matemáticas de la música?</span>
+        <div className="mt-6 p-4 bg-gray-900/50 rounded-md flex items-center justify-between gap-3 border border-gray-700 flex-wrap">
+          <div className="flex items-center min-w-0">
+            <BookOpen className="w-5 h-5 text-yellow-500 mr-2 flex-shrink-0" />
+            <span className="text-gray-300 text-sm sm:text-base">¿Quieres aprender más sobre las matemáticas de la música?</span>
           </div>
-          <Button variant="outline" size="sm" className="border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10">
+          <Button variant="outline" size="sm" className="border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10 flex-shrink-0">
             Explorar recursos
           </Button>
         </div>

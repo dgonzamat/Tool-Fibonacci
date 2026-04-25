@@ -262,14 +262,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
 
   return (
     <Card className="w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-gray-700 shadow-2xl">
-      <CardContent className="p-6">
-        <div className="space-y-6">
+      <CardContent className="p-4 sm:p-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-1">{songTitle}</h3>
-              <div className="flex items-center text-sm text-gray-400">
-                <Clock className="w-4 h-4 mr-1" />
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="min-w-0">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-1 truncate">{songTitle}</h3>
+              <div className="flex items-center text-xs sm:text-sm text-gray-400">
+                <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
                 <span>Duración: {formatTime(duration)}</span>
               </div>
             </div>
@@ -277,9 +277,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
               href={getYouTubeUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+              aria-label={`Abrir ${songTitle} en YouTube`}
+              className="flex items-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm rounded-lg transition-colors flex-shrink-0"
             >
-              <ExternalLink className="w-4 h-4 mr-2" />
+              <ExternalLink className="w-4 h-4 mr-1.5 sm:mr-2" />
               YouTube
             </a>
           </div>
@@ -305,18 +306,19 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-center space-x-6 py-4 bg-gray-800/50 rounded-xl">
+          <div className="flex items-center justify-center gap-4 sm:gap-6 py-3 sm:py-4 px-3 bg-gray-800/50 rounded-xl flex-wrap">
             <Button
               onClick={togglePlayPause}
               variant="outline"
               size="lg"
+              aria-label={isPlaying ? "Pausar" : "Reproducir"}
               className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 border-purple-500 text-white shadow-lg"
               disabled={!playerReady}
             >
               {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </Button>
             <div className="text-center">
-              <div className="text-lg font-mono text-white">
+              <div className="text-base sm:text-lg font-mono text-white">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </div>
               {!playerReady && <div className="text-xs text-yellow-400 mt-1">Preparando reproductor...</div>}
@@ -325,13 +327,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
 
           {/* Fibonacci Points Timeline */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full">
+            <div className="flex items-center space-x-3 mb-4 sm:mb-6">
+              <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full">
                 <span className="text-black font-bold text-lg">φ</span>
               </div>
-              <div>
-                <h4 className="text-lg font-bold text-white">Puntos Fibonacci</h4>
-                <p className="text-sm text-gray-400">
+              <div className="min-w-0">
+                <h4 className="text-base sm:text-lg font-bold text-white">Puntos Fibonacci</h4>
+                <p className="text-xs sm:text-sm text-gray-400">
                   {fibonacciPoints.length} momentos matemáticamente significativos
                 </p>
               </div>
@@ -340,7 +342,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
             {/* Timeline */}
             <div className="relative">
               {/* Timeline line */}
-              <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600"></div>
+              <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600"></div>
 
               {/* Fibonacci Points */}
               <div className="space-y-4">
@@ -353,13 +355,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                   return (
                     <div
                       key={index}
-                      className="relative flex items-start space-x-4"
+                      className="relative flex items-start gap-3 sm:gap-4"
                       onMouseEnter={() => setHoveredPoint(index)}
                       onMouseLeave={() => setHoveredPoint(null)}
                     >
                       {/* Timeline dot */}
                       <div
-                        className={`relative z-10 flex items-center justify-center w-12 h-12 rounded-full border-3 transition-all duration-300 ${
+                        className={`relative z-10 flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-[3px] transition-all duration-300 ${
                           isNearPoint
                             ? "bg-gradient-to-r from-yellow-400 to-yellow-500 border-yellow-300 shadow-lg shadow-yellow-500/50 scale-110"
                             : isPastPoint
@@ -368,7 +370,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                         }`}
                       >
                         <IconComponent
-                          className={`w-5 h-5 ${
+                          className={`w-4 h-4 sm:w-5 sm:h-5 ${
                             isNearPoint ? "text-black" : isPastPoint ? "text-white" : "text-gray-300"
                           }`}
                         />
@@ -376,8 +378,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
 
                       {/* Content Card */}
                       <div
-                        className={`flex-1 cursor-pointer transition-all duration-300 ${
-                          hoveredPoint === index ? "transform scale-105" : ""
+                        className={`flex-1 min-w-0 cursor-pointer transition-all duration-300 ${
+                          hoveredPoint === index ? "sm:transform sm:scale-105" : ""
                         }`}
                         onClick={() => seekToTime(point.time)}
                       >
@@ -390,12 +392,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                                 : "bg-gradient-to-r from-gray-800/50 to-gray-700/50 border-gray-600/50 hover:border-yellow-500/30 hover:bg-gray-700/60"
                           }`}
                         >
-                          <CardContent className="p-4">
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex items-center space-x-3">
+                          <CardContent className="p-3 sm:p-4">
+                            <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3 flex-wrap">
+                              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
                                 <Badge
                                   variant="secondary"
-                                  className={`text-sm font-bold ${
+                                  className={`text-xs sm:text-sm font-bold ${
                                     isNearPoint
                                       ? "bg-yellow-600 text-black"
                                       : isPastPoint
@@ -406,7 +408,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                                   F{fibNumber}
                                 </Badge>
                                 <span
-                                  className={`font-mono text-lg font-bold ${
+                                  className={`font-mono text-base sm:text-lg font-bold ${
                                     isNearPoint ? "text-yellow-300" : isPastPoint ? "text-green-300" : "text-gray-300"
                                   }`}
                                 >
@@ -414,7 +416,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                                 </span>
                               </div>
                               <Play
-                                className={`w-5 h-5 transition-all duration-300 ${
+                                className={`w-5 h-5 flex-shrink-0 transition-all duration-300 ${
                                   hoveredPoint === index
                                     ? "text-yellow-400 scale-110"
                                     : isNearPoint
@@ -424,16 +426,16 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                               />
                             </div>
 
-                            <div className="space-y-2">
+                            <div className="space-y-1.5 sm:space-y-2">
                               <h5
-                                className={`font-semibold ${
+                                className={`text-sm sm:text-base font-semibold ${
                                   isNearPoint ? "text-yellow-100" : isPastPoint ? "text-green-100" : "text-white"
                                 }`}
                               >
                                 {point.description}
                               </h5>
                               <p
-                                className={`text-sm leading-relaxed ${
+                                className={`text-xs sm:text-sm leading-relaxed ${
                                   isNearPoint ? "text-yellow-200" : isPastPoint ? "text-green-200" : "text-gray-300"
                                 }`}
                               >
@@ -459,23 +461,23 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
           </div>
 
           {/* Progress Summary */}
-          <div className="mt-6 p-4 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl border border-purple-500/20">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-4">
+          <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl border border-purple-500/20">
+            <div className="flex items-center justify-between gap-3 text-xs sm:text-sm flex-wrap">
+              <div className="flex items-center gap-x-3 gap-y-1.5 flex-wrap">
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-300">
                     Completados: {fibonacciPoints.filter((p) => currentTime > p.time).length}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse flex-shrink-0"></div>
                   <span className="text-gray-300">
                     Activos: {fibonacciPoints.filter((p) => Math.abs(currentTime - p.time) < 10).length}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-gray-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-gray-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-300">
                     Pendientes: {fibonacciPoints.filter((p) => currentTime < p.time).length}
                   </span>
