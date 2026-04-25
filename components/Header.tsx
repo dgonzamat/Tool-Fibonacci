@@ -3,9 +3,17 @@
 import { useState } from "react"
 import { Sigma, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useTranslation } from "./i18n-provider"
+import LanguageToggle from "./LanguageToggle"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { t } = useTranslation()
+  const navItems = [
+    { href: "#music", label: t("nav.music") },
+    { href: "#fibonacci", label: t("nav.fibonacci") },
+    { href: "#education", label: t("nav.education") },
+  ]
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black/95 backdrop-blur-xl border-b border-yellow-500/20 px-4 sm:px-6 py-3 sm:py-4 shadow-2xl">
@@ -23,16 +31,12 @@ export default function Header() {
             <span className="text-base sm:text-xl font-bold tracking-wider text-white whitespace-nowrap">
               Tool <span className="text-yellow-500">Fibonacci</span>
             </span>
-            <div className="hidden sm:block text-xs text-gray-400 font-mono">F(n) = F(n-1) + F(n-2)</div>
+            <div className="hidden sm:block text-xs text-gray-400 font-mono">{t("header.formula")}</div>
           </div>
         </div>
 
-        <nav className="hidden md:flex space-x-8">
-          {[
-            { href: "#music", label: "Análisis Musical" },
-            { href: "#fibonacci", label: "Fibonacci" },
-            { href: "#education", label: "Educación" },
-          ].map(({ href, label }) => (
+        <nav className="hidden md:flex items-center space-x-8">
+          {navItems.map(({ href, label }) => (
             <a
               key={href}
               href={href}
@@ -42,6 +46,7 @@ export default function Header() {
               <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-yellow-500 to-yellow-600 group-hover:w-full transition-all duration-300"></div>
             </a>
           ))}
+          <LanguageToggle />
         </nav>
 
         <Button
@@ -60,11 +65,7 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-black/98 backdrop-blur-xl border-b border-yellow-500/20 shadow-2xl">
           <nav className="flex flex-col items-center py-8 space-y-6">
-            {[
-              { href: "#music", label: "Análisis Musical" },
-              { href: "#fibonacci", label: "Fibonacci" },
-              { href: "#education", label: "Educación" },
-            ].map(({ href, label }) => (
+            {navItems.map(({ href, label }) => (
               <a
                 key={href}
                 href={href}
@@ -74,6 +75,7 @@ export default function Header() {
                 {label}
               </a>
             ))}
+            <LanguageToggle />
           </nav>
         </div>
       )}
