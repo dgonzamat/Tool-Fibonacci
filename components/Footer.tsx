@@ -1,6 +1,6 @@
 "use client"
 
-import { Sigma, Github, Twitter, Youtube, Mail, Heart } from "lucide-react"
+import { Sigma, Github, Heart } from "lucide-react"
 import { useTranslation } from "./i18n-provider"
 
 export default function Footer() {
@@ -30,12 +30,15 @@ export default function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed">{t("footer.tagline")}</p>
 
             <div className="flex items-center space-x-4 text-gray-400">
-              {[Github, Twitter, Youtube, Mail].map((Icon, index) => (
-                <div key={index} className="relative group cursor-pointer">
-                  <Icon className="w-5 h-5 hover:text-yellow-500 transition-colors" />
-                  <div className="absolute inset-0 w-5 h-5 border border-yellow-500/0 group-hover:border-yellow-500/30 rounded transition-all"></div>
-                </div>
-              ))}
+              <a
+                href="https://github.com/dgonzamat/Tool-Fibonacci"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={t("footer.repo")}
+                className="relative group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded"
+              >
+                <Github aria-hidden="true" className="w-5 h-5 hover:text-yellow-500 transition-colors" />
+              </a>
             </div>
           </div>
 
@@ -83,11 +86,21 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-gray-400 text-center md:text-left">
           <p>{t("footer.copyright")}</p>
-          <div className="flex items-center justify-center flex-wrap gap-x-2 gap-y-1">
+          <p className="flex items-center justify-center flex-wrap gap-x-2 gap-y-1">
+            <span>{t("footer.author")}</span>
+            <a
+              href="https://github.com/dgonzamat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-500 hover:text-yellow-400 underline-offset-4 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded"
+            >
+              Daniel González
+            </a>
+            <span aria-hidden="true">·</span>
             <span>{t("footer.created")}</span>
             <Heart aria-hidden="true" className="w-4 h-4 text-yellow-500 animate-pulse" />
             <span>{t("footer.created.suffix")}</span>
-          </div>
+          </p>
         </div>
       </div>
     </footer>

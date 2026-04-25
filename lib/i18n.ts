@@ -22,6 +22,8 @@ export const es = {
   "footer.link.fibonacci": "Patrones Fibonacci",
   "footer.link.education": "Recursos Educativos",
   "footer.copyright": "© 2024 Tool Fibonacci Project. Todos los derechos reservados.",
+  "footer.author": "Hecho por",
+  "footer.repo": "Ver en GitHub",
   "footer.created": "Creado con",
   "footer.created.suffix": "para entusiastas de las matemáticas y la música",
   // Language toggle
@@ -129,6 +131,8 @@ export const en: Record<DictKey, string> = {
   "footer.link.fibonacci": "Fibonacci Patterns",
   "footer.link.education": "Educational Resources",
   "footer.copyright": "© 2024 Tool Fibonacci Project. All rights reserved.",
+  "footer.author": "Made by",
+  "footer.repo": "View on GitHub",
   "footer.created": "Made with",
   "footer.created.suffix": "for math and music enthusiasts",
   "lang.label.es": "Español",
