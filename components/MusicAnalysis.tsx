@@ -5,125 +5,8 @@ import { useState } from "react"
 import { Music, TrendingUp, Clock } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { toolSongs } from "@/lib/songs"
 import AudioPlayer from "./AudioPlayer"
-
-// Datos de las canciones de Tool con análisis Fibonacci
-const toolSongs = [
-  {
-    id: "lateralus",
-    title: "Lateralus",
-    album: "Lateralus",
-    year: 2001,
-    duration: 573, // 9:33
-    description:
-      "Una obra maestra que utiliza la secuencia de Fibonacci en su estructura lírica y rítmica, creando una experiencia musical matemáticamente perfecta.",
-    complexity: 9.8,
-    fibonacciMoments: [
-      {
-        time: 97, // 1:37
-        description: "Inicio del patrón Fibonacci en la lírica",
-        significance: "Las sílabas siguen la secuencia: 1, 1, 2, 3, 5, 8...",
-      },
-      {
-        time: 233, // 3:53
-        description: "Cambio de tiempo siguiendo proporción áurea",
-        significance: "El ritmo cambia en el punto áureo de la canción",
-      },
-      {
-        time: 354, // 5:54
-        description: "Clímax matemático",
-        significance: "Convergencia de todos los patrones Fibonacci",
-      },
-      {
-        time: 462, // 7:42
-        description: "Resolución en espiral",
-        significance: "La música se desenrolla siguiendo la espiral de Fibonacci",
-      },
-    ],
-    patterns: [
-      "Estructura lírica basada en secuencia de Fibonacci",
-      "Cambios de tiempo en proporciones áureas",
-      "87 compases divididos según números de Fibonacci",
-      "Patrones rítmicos que siguen la espiral dorada",
-    ],
-  },
-  {
-    id: "schism",
-    title: "Schism",
-    album: "Lateralus",
-    year: 2001,
-    duration: 547, // 9:07
-    description:
-      "Una exploración de las divisiones y reunificaciones, con patrones matemáticos que reflejan la naturaleza fractal de las relaciones humanas.",
-    complexity: 8.7,
-    fibonacciMoments: [
-      {
-        time: 89, // 1:29
-        description: "Primera división rítmica",
-        significance: "El compás se divide siguiendo proporciones Fibonacci",
-      },
-      {
-        time: 178, // 2:58
-        description: "Punto de tensión máxima",
-        significance: "Ubicado en el 32.5% de la canción (proporción áurea)",
-      },
-      {
-        time: 337, // 5:37
-        description: "Reunificación armónica",
-        significance: "Los elementos se recombinan en patrones Fibonacci",
-      },
-      {
-        time: 445, // 7:25
-        description: "Resolución final",
-        significance: "Cierre que completa la secuencia matemática",
-      },
-    ],
-    patterns: [
-      "Compases irregulares basados en números de Fibonacci",
-      "Divisiones rítmicas que siguen la proporción áurea",
-      "Estructura armónica en espiral",
-      "Patrones de repetición matemáticamente precisos",
-    ],
-  },
-  {
-    id: "fibonacci",
-    title: "Forty Six & 2",
-    album: "Ænima",
-    year: 1996,
-    description:
-      "Una canción sobre evolución y transformación, con 46 cromosomas + 2 representando el siguiente paso evolutivo, estructurada con patrones matemáticos.",
-    duration: 366, // 6:06
-    complexity: 8.2,
-    fibonacciMoments: [
-      {
-        time: 58, // 0:58
-        description: "Introducción del patrón principal",
-        significance: "Establecimiento del ritmo base en Fibonacci",
-      },
-      {
-        time: 144, // 2:24
-        description: "Primera transformación",
-        significance: "Cambio estructural en el punto áureo",
-      },
-      {
-        time: 226, // 3:46
-        description: "Clímax evolutivo",
-        significance: "Momento de máxima intensidad matemática",
-      },
-      {
-        time: 318, // 5:18
-        description: "Resolución y transcendencia",
-        significance: "Culminación del proceso de transformación",
-      },
-    ],
-    patterns: [
-      "46 + 2 cromosomas como base conceptual",
-      "Progresiones armónicas en secuencia Fibonacci",
-      "Estructura temporal basada en proporción áurea",
-      "Patrones rítmicos que evocan evolución",
-    ],
-  },
-]
 
 const MusicAnalysis: React.FC = () => {
   const [selectedSong, setSelectedSong] = useState(toolSongs[0])
@@ -187,6 +70,7 @@ const MusicAnalysis: React.FC = () => {
           <AudioPlayer
             songId={selectedSong.id}
             songTitle={selectedSong.title}
+            youtubeId={selectedSong.youtubeId}
             fibonacciPoints={selectedSong.fibonacciMoments}
             duration={selectedSong.duration}
           />
