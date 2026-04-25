@@ -204,13 +204,18 @@ export default function FibonacciVisualizer() {
             </div>
 
             {/* Sequence Grid */}
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3" role="list">
               {sequence.slice(0, 12).map((num, i) => (
-                <div
+                <button
                   key={i}
+                  type="button"
+                  role="listitem"
+                  aria-label={`F(${i}) = ${num}${i === activeIndex ? ", actual" : ""}`}
+                  aria-current={i === activeIndex ? "true" : undefined}
                   className={cn(
                     "relative flex items-center justify-center rounded-lg transition-all duration-500 border font-mono text-xs sm:text-sm",
-                    "h-12 sm:h-14 w-full cursor-pointer group overflow-hidden",
+                    "h-12 sm:h-14 w-full group overflow-hidden",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900",
                     i === activeIndex
                       ? "bg-gradient-to-r from-yellow-500 to-yellow-600 text-black border-yellow-400 scale-105 shadow-lg shadow-yellow-500/50"
                       : i < activeIndex
@@ -235,10 +240,10 @@ export default function FibonacciVisualizer() {
                   )}
 
                   {/* Hover tooltip */}
-                  <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  <span aria-hidden="true" className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                     F({i}) = {num}
-                  </div>
-                </div>
+                  </span>
+                </button>
               ))}
             </div>
 
