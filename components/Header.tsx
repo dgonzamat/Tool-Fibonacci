@@ -8,22 +8,22 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-black/95 backdrop-blur-xl border-b border-yellow-500/20 px-6 py-4 shadow-2xl">
-      <div className="max-w-6xl mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
-              <Sigma className="w-6 h-6 text-black" />
+    <header className="fixed top-0 left-0 w-full z-50 bg-black/95 backdrop-blur-xl border-b border-yellow-500/20 px-4 sm:px-6 py-3 sm:py-4 shadow-2xl">
+      <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
+        <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+          <div className="relative flex-shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
+              <Sigma className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
             </div>
             {/* Recursive rings */}
-            <div className="absolute inset-0 w-10 h-10 border-2 border-yellow-500/30 rounded-full animate-ping"></div>
-            <div className="absolute inset-0 w-10 h-10 border border-yellow-500/20 rounded-full animate-pulse"></div>
+            <div className="absolute inset-0 w-9 h-9 sm:w-10 sm:h-10 border-2 border-yellow-500/30 rounded-full animate-ping"></div>
+            <div className="absolute inset-0 w-9 h-9 sm:w-10 sm:h-10 border border-yellow-500/20 rounded-full animate-pulse"></div>
           </div>
-          <div>
-            <span className="text-xl font-bold tracking-wider text-white">
+          <div className="min-w-0">
+            <span className="text-base sm:text-xl font-bold tracking-wider text-white whitespace-nowrap">
               Tool <span className="text-yellow-500">Fibonacci</span>
             </span>
-            <div className="text-xs text-gray-400 font-mono">F(n) = F(n-1) + F(n-2)</div>
+            <div className="hidden sm:block text-xs text-gray-400 font-mono">F(n) = F(n-1) + F(n-2)</div>
           </div>
         </div>
 
@@ -44,8 +44,15 @@ export default function Header() {
           ))}
         </nav>
 
-        <Button variant="ghost" size="icon" className="md:hidden relative" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <div className="relative">{isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}</div>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={isMenuOpen}
+          className="md:hidden relative flex-shrink-0 text-white hover:bg-yellow-500/10"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <div className="relative">{isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}</div>
         </Button>
       </div>
 

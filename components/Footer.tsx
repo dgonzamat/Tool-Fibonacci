@@ -4,9 +4,9 @@ import { Sigma, Github, Twitter, Youtube, Mail, Heart } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="w-full py-16 mt-20 border-t border-gray-700 bg-gradient-to-b from-gray-900 to-black">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+    <footer className="w-full py-10 sm:py-16 mt-12 sm:mt-20 border-t border-gray-700 bg-gradient-to-b from-gray-900 to-black">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
           <div className="space-y-6">
             <div className="flex items-center space-x-3">
               <div className="relative">
@@ -82,11 +82,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-gray-400">
-          <p className="flex items-center space-x-2">
-            <span>© 2024 Tool Fibonacci Project. Todos los derechos reservados.</span>
-          </p>
-          <div className="flex items-center mt-4 md:mt-0 space-x-2">
+        <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-gray-400 text-center md:text-left">
+          <p>© 2024 Tool Fibonacci Project. Todos los derechos reservados.</p>
+          <div className="flex items-center justify-center flex-wrap gap-x-2 gap-y-1">
             <span>Creado con</span>
             <Heart className="w-4 h-4 text-yellow-500 animate-pulse" />
             <span>para entusiastas de las matemáticas y la música</span>
