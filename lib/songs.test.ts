@@ -76,4 +76,14 @@ describe("toolSongs", () => {
       }
     }
   })
+
+  it("each song has at least one reference with an https URL", () => {
+    for (const song of toolSongs) {
+      expect(song.references.length).toBeGreaterThan(0)
+      for (const ref of song.references) {
+        expect(ref.title.length).toBeGreaterThan(0)
+        expect(ref.url).toMatch(/^https:\/\//)
+      }
+    }
+  })
 })
