@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: '/opengraph-image.png',
+        url: '/og.png',
         width: 1200,
         height: 630,
         alt: 'Tool × Fibonacci',
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `${siteName} · Patrones matemáticos en la música de Tool`,
     description: siteDescription,
-    images: ['/opengraph-image.png'],
+    images: ['/og.png'],
   },
   robots: {
     index: true,
@@ -69,6 +69,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
+  },
+  verification: {
+    google: 'yUd3nome40cMo2VQNkHM-I811d3TdwR5zxuebVSn2wc',
   },
 }
 
