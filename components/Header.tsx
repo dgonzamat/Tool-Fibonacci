@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
 import { Sigma, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "./i18n-provider"
@@ -86,7 +87,11 @@ export default function Header() {
         )}
       >
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
-          <a href="#main" className="flex items-center space-x-2 sm:space-x-3 min-w-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 sm:space-x-3 min-w-0 group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md"
+            aria-label="Tool Fibonacci"
+          >
             <div className="relative flex-shrink-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full flex items-center justify-center shadow-lg">
                 <Sigma aria-hidden="true" className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
@@ -100,13 +105,13 @@ export default function Header() {
               </span>
               <div className="hidden sm:block text-xs text-gray-400 font-mono">{t("header.formula")}</div>
             </div>
-          </a>
+          </Link>
 
           <nav className="hidden md:flex items-center space-x-8" aria-label="Primary">
             {navItems.map(({ href, id, label }) => {
               const isActive = activeSection === id
               return (
-                <a
+                <Link
                   key={href}
                   href={href}
                   aria-current={isActive ? "true" : undefined}
@@ -123,7 +128,7 @@ export default function Header() {
                       isActive ? "w-full" : "w-0 group-hover:w-full",
                     )}
                   />
-                </a>
+                </Link>
               )
             })}
             <LanguageToggle />
@@ -175,7 +180,7 @@ export default function Header() {
             {navItems.map(({ href, id, label }) => {
               const isActive = activeSection === id
               return (
-                <a
+                <Link
                   key={href}
                   href={href}
                   aria-current={isActive ? "true" : undefined}
@@ -186,7 +191,7 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {label}
-                </a>
+                </Link>
               )
             })}
             <div className="pt-4 mt-auto border-t border-yellow-500/20 flex items-center justify-between gap-3">
