@@ -31,7 +31,7 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - run: pnpm exec next build
+      - run: pnpm build
         env:
           NODE_ENV: production
 
