@@ -36,26 +36,28 @@ export default function FibonacciVisualizer() {
 
   const goldenRatio = GOLDEN_RATIO
 
-  // Generate spiral path for SVG
+  // Logarithmic golden spiral: r(θ) = a · b^θ with b = φ^(2/π).
+  // This guarantees the radius multiplies by φ every quarter turn (π/2 rad),
+  // which is the defining property of the golden spiral.
   const generateSpiralPath = () => {
-    const centerX = 200
-    const centerY = 200
-    const scale = 3
-    let path = `M ${centerX} ${centerY}`
+    const cx = 200
+    const cy = 200
+    const a = 4
+    const b = Math.pow(GOLDEN_RATIO, 2 / Math.PI)
+    const fraction = sequence.length > 1 ? (activeIndex + 1) / sequence.length : 0
+    const maxTheta = fraction * 4 * Math.PI
+    const samples = 256
 
-    for (let i = 0; i <= activeIndex && i < 10; i++) {
-      const angle = i * 0.5
-      const radius = sequence[i + 1] * scale
-      const x = centerX + radius * Math.cos(angle)
-      const y = centerY + radius * Math.sin(angle)
+    if (samples <= 0 || maxTheta <= 0) return `M ${cx} ${cy}`
 
-      if (i === 0) {
-        path += ` L ${x} ${y}`
-      } else {
-        path += ` Q ${centerX + (radius * 0.7) * Math.cos(angle - 0.25)} ${centerY + (radius * 0.7) * Math.sin(angle - 0.25)} ${x} ${y}`
-      }
+    let path = ""
+    for (let i = 0; i <= samples; i++) {
+      const theta = (i / samples) * maxTheta
+      const r = a * Math.pow(b, theta)
+      const x = cx + r * Math.cos(theta)
+      const y = cy + r * Math.sin(theta)
+      path += i === 0 ? `M ${x.toFixed(2)} ${y.toFixed(2)}` : ` L ${x.toFixed(2)} ${y.toFixed(2)}`
     }
-
     return path
   }
 

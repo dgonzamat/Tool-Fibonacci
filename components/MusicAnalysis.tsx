@@ -2,14 +2,14 @@
 
 import type React from "react"
 import { useState, useMemo } from "react"
-import { Music, TrendingUp, Clock } from "lucide-react"
+import { Music, TrendingUp, Clock, BookOpen, ExternalLink } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { toolSongs, localizeMoments } from "@/lib/songs"
 import { useTranslation } from "./i18n-provider"
+import { interpolate } from "@/lib/i18n"
 import AudioPlayer from "./AudioPlayer"
 import ErrorBoundary from "./ErrorBoundary"
-import { ExternalLink } from "lucide-react"
 
 const MusicAnalysis: React.FC = () => {
   const { t, lang } = useTranslation()
@@ -146,6 +146,38 @@ const MusicAnalysis: React.FC = () => {
               <p className="text-sm text-gray-300">{selectedSong.description[lang]}</p>
             </CardContent>
           </Card>
+
+          {selectedSong.references.length > 0 && (
+            <Card className="bg-gray-900/50 border-yellow-500/20">
+              <CardHeader className="p-4 sm:p-6">
+                <CardTitle className="text-lg sm:text-xl text-white flex items-center">
+                  <BookOpen aria-hidden="true" className="w-5 h-5 mr-2 text-yellow-400 flex-shrink-0" />
+                  <span>{t("music.references.title")}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <ul className="space-y-2">
+                  {selectedSong.references.map((ref) => (
+                    <li key={ref.url}>
+                      <a
+                        href={ref.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={interpolate(t("music.external.aria"), { title: ref.title })}
+                        className="inline-flex items-start gap-2 text-sm text-gray-300 hover:text-yellow-400 transition-colors group focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded"
+                      >
+                        <ExternalLink
+                          aria-hidden="true"
+                          className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-500 group-hover:text-yellow-400 transition-colors"
+                        />
+                        <span className="underline-offset-4 group-hover:underline">{ref.title}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

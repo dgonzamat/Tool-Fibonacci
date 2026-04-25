@@ -81,6 +81,8 @@ export const es = {
   "music.analysis.title": "Análisis Matemático",
   "music.complexity": "Complejidad",
   "music.points": "Puntos Fibonacci",
+  "music.references.title": "Fuentes y referencias",
+  "music.external.aria": "Abrir {title} en una pestaña nueva",
   // EducationalSection
   "edu.concepts": "Conceptos Matemáticos",
   "edu.topic.sequence.title": "La Secuencia de Fibonacci",
@@ -195,6 +197,8 @@ export const en: Record<DictKey, string> = {
   "music.analysis.title": "Mathematical Analysis",
   "music.complexity": "Complexity",
   "music.points": "Fibonacci Points",
+  "music.references.title": "Sources and references",
+  "music.external.aria": "Open {title} in a new tab",
   "edu.concepts": "Mathematical Concepts",
   "edu.topic.sequence.title": "The Fibonacci Sequence",
   "edu.topic.sequence.description": "Learn about the mathematical sequence and its properties",

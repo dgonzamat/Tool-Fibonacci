@@ -17,6 +17,11 @@ export interface FibonacciMoment {
   significance: string
 }
 
+export interface Reference {
+  title: string
+  url: string
+}
+
 export interface Song {
   id: string
   title: string
@@ -28,6 +33,7 @@ export interface Song {
   description: Localized
   patterns: { es: string[]; en: string[] }
   fibonacciMoments: LocalizedFibonacciMoment[]
+  references: Reference[]
 }
 
 export const toolSongs: Song[] = [
@@ -72,23 +78,23 @@ export const toolSongs: Song[] = [
       {
         time: 233,
         description: {
-          es: "Cambio de tiempo siguiendo proporción áurea",
-          en: "Time-signature change at the golden-ratio point",
+          es: "Marca temporal en F(13) = 233 s",
+          en: "Time mark at F(13) = 233 s",
         },
         significance: {
-          es: "El ritmo cambia en el punto áureo de la canción",
-          en: "The rhythm shifts at the song's golden-ratio point",
+          es: "Coincide con un número de Fibonacci a 0.41 del recorrido",
+          en: "Lands on a Fibonacci number at 0.41 of the runtime",
         },
       },
       {
         time: 354,
         description: {
-          es: "Clímax matemático",
-          en: "Mathematical climax",
+          es: "Punto áureo (0.618 × duración)",
+          en: "Golden-ratio point (0.618 × duration)",
         },
         significance: {
-          es: "Convergencia de todos los patrones Fibonacci",
-          en: "Convergence of every Fibonacci pattern",
+          es: "Clímax matemático en 354 s ≈ 573 × 1/φ",
+          en: "Mathematical climax at 354 s ≈ 573 × 1/φ",
         },
       },
       {
@@ -98,9 +104,19 @@ export const toolSongs: Song[] = [
           en: "Spiral resolution",
         },
         significance: {
-          es: "La música se desenrolla siguiendo la espiral de Fibonacci",
-          en: "The music unwinds along the Fibonacci spiral",
+          es: "La música se desenrolla hacia el cierre",
+          en: "The music unwinds towards the closing section",
         },
+      },
+    ],
+    references: [
+      {
+        title: "Lateralus (song) — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Lateralus_(song)",
+      },
+      {
+        title: "Fibonacci sequence — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Fibonacci_sequence",
       },
     ],
   },
@@ -141,10 +157,10 @@ export const toolSongs: Song[] = [
       },
       {
         time: 178,
-        description: { es: "Punto de tensión máxima", en: "Peak tension point" },
+        description: { es: "Punto de división menor", en: "Minor partition point" },
         significance: {
-          es: "Ubicado en el 32.5% de la canción (proporción áurea)",
-          en: "Located at 32.5% of the song (golden-ratio point)",
+          es: "Aprox. 1/φ² ≈ 38.2 % desde el final del tema",
+          en: "About 1/φ² ≈ 38.2% measured from the end of the track",
         },
       },
       {
@@ -162,6 +178,16 @@ export const toolSongs: Song[] = [
           es: "Cierre que completa la secuencia matemática",
           en: "Closure that completes the mathematical sequence",
         },
+      },
+    ],
+    references: [
+      {
+        title: "Schism (song) — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Schism_(song)",
+      },
+      {
+        title: "Golden ratio — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Golden_ratio",
       },
     ],
   },
@@ -223,6 +249,16 @@ export const toolSongs: Song[] = [
           es: "Culminación del proceso de transformación",
           en: "Culmination of the transformation process",
         },
+      },
+    ],
+    references: [
+      {
+        title: "Forty Six & 2 — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/Forty_Six_%26_2",
+      },
+      {
+        title: "Ænima (album) — Wikipedia",
+        url: "https://en.wikipedia.org/wiki/%C3%86nima",
       },
     ],
   },
