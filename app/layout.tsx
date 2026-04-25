@@ -68,8 +68,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
   },
+  manifest: '/manifest.webmanifest',
   verification: {
     google: 'yUd3nome40cMo2VQNkHM-I811d3TdwR5zxuebVSn2wc',
   },
