@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Sigma, Github, Heart } from "lucide-react"
 import { useTranslation } from "./i18n-provider"
 
@@ -49,19 +50,19 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { href: "#music", label: t("footer.link.music") },
-                { href: "#fibonacci", label: t("footer.link.fibonacci") },
-                { href: "#education", label: t("footer.link.education") },
+                { href: "/#music", label: t("footer.link.music") },
+                { href: "/#fibonacci", label: t("footer.link.fibonacci") },
+                { href: "/#education", label: t("footer.link.education") },
                 { href: "/blog/", label: t("footer.link.blog") },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <a
+                  <Link
                     href={href}
                     className="text-gray-400 hover:text-yellow-500 transition-colors text-sm relative group"
                   >
                     <span className="relative z-10">{label}</span>
                     <div className="absolute -left-2 top-1/2 w-0 h-0 border-l-4 border-l-transparent border-r-4 border-r-transparent border-b-4 border-b-yellow-500 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
