@@ -36,6 +36,11 @@ export const metadata: Metadata = {
   category: 'music',
   alternates: {
     canonical: '/',
+    languages: {
+      es: '/',
+      en: '/',
+      'x-default': '/',
+    },
   },
   openGraph: {
     type: 'website',
@@ -140,6 +145,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <link rel="preconnect" href="https://i.ytimg.com" />
+        <link rel="preconnect" href="https://www.youtube.com" />
+        <link rel="dns-prefetch" href="https://i.ytimg.com" />
+        <link rel="dns-prefetch" href="https://www.youtube.com" />
+      </head>
       <body className="overflow-x-hidden">
         <I18nProvider>
           <SkipLink />

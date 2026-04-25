@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge"
 import { toolSongs, localizeMoments } from "@/lib/songs"
 import { useTranslation } from "./i18n-provider"
 import AudioPlayer from "./AudioPlayer"
+import ErrorBoundary from "./ErrorBoundary"
+import { ExternalLink } from "lucide-react"
 
 const MusicAnalysis: React.FC = () => {
   const { t, lang } = useTranslation()
@@ -73,13 +75,33 @@ const MusicAnalysis: React.FC = () => {
       <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Reproductor - Usar key para forzar re-render */}
         <div key={selectedSong.id} className="min-w-0">
-          <AudioPlayer
-            songId={selectedSong.id}
-            songTitle={selectedSong.title}
-            youtubeId={selectedSong.youtubeId}
-            fibonacciPoints={localizedPoints}
-            duration={selectedSong.duration}
-          />
+          <ErrorBoundary
+            fallback={
+              <Card className="bg-gray-900/50 border-red-500/30">
+                <CardContent className="p-6 text-center space-y-3">
+                  <h3 className="text-lg font-semibold text-white">{t("player.error.title")}</h3>
+                  <p className="text-sm text-gray-400">{t("player.error.body")}</p>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${selectedSong.youtubeId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+                  >
+                    <ExternalLink aria-hidden="true" className="w-4 h-4" />
+                    {t("player.error.action")}
+                  </a>
+                </CardContent>
+              </Card>
+            }
+          >
+            <AudioPlayer
+              songId={selectedSong.id}
+              songTitle={selectedSong.title}
+              youtubeId={selectedSong.youtubeId}
+              fibonacciPoints={localizedPoints}
+              duration={selectedSong.duration}
+            />
+          </ErrorBoundary>
         </div>
 
         {/* Información y patrones */}

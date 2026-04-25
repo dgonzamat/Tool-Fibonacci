@@ -5,6 +5,7 @@ import { Sigma, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTranslation } from "./i18n-provider"
 import LanguageToggle from "./LanguageToggle"
+import ShareButton from "./ShareButton"
 import { useHideOnScroll } from "@/hooks/use-scroll-direction"
 import { useActiveSection } from "@/hooks/use-active-section"
 import { cn } from "@/lib/utils"
@@ -125,6 +126,7 @@ export default function Header() {
               )
             })}
             <LanguageToggle />
+            <ShareButton />
           </nav>
 
           <Button
@@ -186,8 +188,9 @@ export default function Header() {
                 </a>
               )
             })}
-            <div className="pt-4 mt-auto border-t border-yellow-500/20">
+            <div className="pt-4 mt-auto border-t border-yellow-500/20 flex items-center justify-between gap-3">
               <LanguageToggle />
+              <ShareButton />
             </div>
           </nav>
         </div>

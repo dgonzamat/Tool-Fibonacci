@@ -58,7 +58,7 @@ export default function EducationalSection() {
     {
       id: "golden-ratio",
       title: t("edu.topic.golden.title"),
-      icon: <Sigma aria-hidden="true" className="w-5 h-5" />,
+      icon: <span aria-hidden="true" className="font-bold text-base leading-none">φ</span>,
       description: t("edu.topic.golden.description"),
       content: (
         <div className="space-y-6">
