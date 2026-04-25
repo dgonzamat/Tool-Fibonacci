@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { FibonacciMoment } from "@/lib/songs"
+import { useTranslation } from "./i18n-provider"
+import { interpolate } from "@/lib/i18n"
 
 interface AudioPlayerProps {
   songId: string
@@ -17,6 +19,7 @@ interface AudioPlayerProps {
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId, fibonacciPoints, duration }) => {
+  const { t } = useTranslation()
   const [isClient, setIsClient] = useState(false)
   const [shouldLoad, setShouldLoad] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -237,7 +240,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
       <Card className="w-full bg-gray-900 border-gray-700">
         <CardContent className="p-6">
           <div className="flex items-center justify-center h-48 text-gray-400">
-            <div className="animate-pulse">Cargando reproductor...</div>
+            <div className="animate-pulse">{t("player.loading")}</div>
           </div>
         </CardContent>
       </Card>
@@ -254,14 +257,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
               <h3 className="text-lg sm:text-xl font-bold text-white mb-1 truncate">{songTitle}</h3>
               <div className="flex items-center text-xs sm:text-sm text-gray-400">
                 <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
-                <span>Duración: {formatTime(duration)}</span>
+                <span>{t("player.duration")} {formatTime(duration)}</span>
               </div>
             </div>
             <a
               href={getYouTubeUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Abrir ${songTitle} en YouTube`}
+              aria-label={interpolate(t("player.youtube.aria"), { title: songTitle })}
               className="flex items-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm rounded-lg transition-colors flex-shrink-0"
             >
               <ExternalLink className="w-4 h-4 mr-1.5 sm:mr-2" />
@@ -283,7 +286,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                     shouldAutoplayRef.current = true
                     setShouldLoad(true)
                   }}
-                  aria-label={`Cargar reproductor de ${songTitle}`}
+                  aria-label={interpolate(t("player.tap.aria"), { title: songTitle })}
                   className="group absolute inset-0 w-full h-full"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -300,7 +303,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                     </div>
                   </div>
                   <div className="absolute bottom-3 left-3 right-3 text-left">
-                    <span className="text-xs sm:text-sm text-white/90 font-medium drop-shadow">Tocar para cargar</span>
+                    <span className="text-xs sm:text-sm text-white/90 font-medium drop-shadow">{t("player.tap.cta")}</span>
                   </div>
                 </button>
               ) : (
@@ -313,7 +316,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                     <div className="flex items-center justify-center h-full text-gray-400">
                       <div className="text-center">
                         <div className="animate-spin w-8 h-8 border-[3px] border-gray-600 border-t-yellow-500 rounded-full mx-auto mb-3"></div>
-                        <div className="text-base sm:text-lg">Cargando reproductor de YouTube…</div>
+                        <div className="text-base sm:text-lg">{t("player.loadingYouTube")}</div>
                       </div>
                     </div>
                   )}
@@ -328,7 +331,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
               onClick={togglePlayPause}
               variant="outline"
               size="lg"
-              aria-label={isPlaying ? "Pausar" : "Reproducir"}
+              aria-label={isPlaying ? t("controls.pause") : t("controls.play")}
               className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 border-purple-500 text-white shadow-lg"
               disabled={shouldLoad && !playerReady}
             >
@@ -338,7 +341,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
               <div className="text-base sm:text-lg font-mono text-white">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </div>
-              {shouldLoad && !playerReady && <div className="text-xs text-yellow-400 mt-1">Preparando reproductor...</div>}
+              {shouldLoad && !playerReady && <div className="text-xs text-yellow-400 mt-1">{t("player.preparing")}</div>}
             </div>
           </div>
 
@@ -349,9 +352,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                 <span className="text-black font-bold text-lg">φ</span>
               </div>
               <div className="min-w-0">
-                <h4 className="text-base sm:text-lg font-bold text-white">Puntos Fibonacci</h4>
+                <h4 className="text-base sm:text-lg font-bold text-white">{t("player.points.title")}</h4>
                 <p className="text-xs sm:text-sm text-gray-400">
-                  {fibonacciPoints.length} momentos matemáticamente significativos
+                  {interpolate(t("player.points.count"), { n: fibonacciPoints.length })}
                 </p>
               </div>
             </div>
@@ -390,7 +393,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
 
                       <button
                         type="button"
-                        aria-label={`Saltar a ${formatTime(point.time)}: ${point.description}`}
+                        aria-label={interpolate(t("player.points.seek.aria"), {
+                          time: formatTime(point.time),
+                          description: point.description,
+                        })}
                         onMouseEnter={() => setHoveredPoint(index)}
                         onMouseLeave={() => setHoveredPoint(null)}
                         onFocus={() => setHoveredPoint(index)}
@@ -463,7 +469,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                             {isNearPoint && (
                               <div className="mt-3 flex items-center space-x-2 text-yellow-300">
                                 <Sparkles className="w-4 h-4 animate-pulse" />
-                                <span className="text-xs font-medium">¡Momento Fibonacci activo!</span>
+                                <span className="text-xs font-medium">{t("player.points.activeBadge")}</span>
                               </div>
                             )}
                           </CardContent>
@@ -483,27 +489,28 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId,
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-300">
-                    Completados: {fibonacciPoints.filter((p) => currentTime > p.time).length}
+                    {interpolate(t("player.summary.completed"), { n: fibonacciPoints.filter((p) => currentTime > p.time).length })}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse flex-shrink-0"></div>
                   <span className="text-gray-300">
-                    Activos: {fibonacciPoints.filter((p) => Math.abs(currentTime - p.time) < 10).length}
+                    {interpolate(t("player.summary.active"), { n: fibonacciPoints.filter((p) => Math.abs(currentTime - p.time) < 10).length })}
                   </span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-gray-500 rounded-full flex-shrink-0"></div>
                   <span className="text-gray-300">
-                    Pendientes: {fibonacciPoints.filter((p) => currentTime < p.time).length}
+                    {interpolate(t("player.summary.pending"), { n: fibonacciPoints.filter((p) => currentTime < p.time).length })}
                   </span>
                 </div>
               </div>
               <div className="text-purple-300 font-medium">
-                {Math.round(
-                  (fibonacciPoints.filter((p) => currentTime > p.time).length / fibonacciPoints.length) * 100,
-                )}
-                % explorado
+                {interpolate(t("player.summary.explored"), {
+                  n: Math.round(
+                    (fibonacciPoints.filter((p) => currentTime > p.time).length / fibonacciPoints.length) * 100,
+                  ),
+                })}
               </div>
             </div>
           </div>

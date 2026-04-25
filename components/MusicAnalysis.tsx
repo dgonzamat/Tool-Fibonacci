@@ -1,15 +1,21 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Music, TrendingUp, Clock } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { toolSongs } from "@/lib/songs"
+import { toolSongs, localizeMoments } from "@/lib/songs"
+import { useTranslation } from "./i18n-provider"
 import AudioPlayer from "./AudioPlayer"
 
 const MusicAnalysis: React.FC = () => {
+  const { t, lang } = useTranslation()
   const [selectedSong, setSelectedSong] = useState(toolSongs[0])
+  const localizedPoints = useMemo(
+    () => localizeMoments(selectedSong.fibonacciMoments, lang),
+    [selectedSong, lang],
+  )
 
   const formatTime = (seconds: number): string => {
     if (isNaN(seconds) || seconds < 0) return "0:00"
@@ -57,7 +63,7 @@ const MusicAnalysis: React.FC = () => {
                   {song.complexity}/10
                 </Badge>
               </div>
-              <p className="text-xs text-gray-400 line-clamp-2">{song.description}</p>
+              <p className="text-xs text-gray-400 line-clamp-2">{song.description[lang]}</p>
             </CardContent>
           </Card>
         ))}
@@ -71,7 +77,7 @@ const MusicAnalysis: React.FC = () => {
             songId={selectedSong.id}
             songTitle={selectedSong.title}
             youtubeId={selectedSong.youtubeId}
-            fibonacciPoints={selectedSong.fibonacciMoments}
+            fibonacciPoints={localizedPoints}
             duration={selectedSong.duration}
           />
         </div>
@@ -81,13 +87,13 @@ const MusicAnalysis: React.FC = () => {
           <Card className="bg-gray-900/50 border-purple-500/20">
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-lg sm:text-xl text-white flex items-center">
-                <TrendingUp className="w-5 h-5 mr-2 text-purple-400 flex-shrink-0" />
-                <span>Patrones Fibonacci Detectados</span>
+                <TrendingUp aria-hidden="true" className="w-5 h-5 mr-2 text-purple-400 flex-shrink-0" />
+                <span>{t("music.patterns.title")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0">
               <ul className="space-y-3">
-                {selectedSong.patterns.map((pattern, index) => (
+                {selectedSong.patterns[lang].map((pattern, index) => (
                   <li key={index} className="flex items-start">
                     <span className="inline-block w-2 h-2 bg-purple-400 rounded-full mt-2 mr-3 flex-shrink-0" />
                     <span className="text-gray-300 text-sm">{pattern}</span>
@@ -100,22 +106,22 @@ const MusicAnalysis: React.FC = () => {
           <Card className="bg-gray-900/50 border-blue-500/20">
             <CardHeader className="p-4 sm:p-6">
               <CardTitle className="text-lg sm:text-xl text-white flex items-center">
-                <Music className="w-5 h-5 mr-2 text-blue-400 flex-shrink-0" />
-                <span>Análisis Matemático</span>
+                <Music aria-hidden="true" className="w-5 h-5 mr-2 text-blue-400 flex-shrink-0" />
+                <span>{t("music.analysis.title")}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
               <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <div className="text-center p-3 bg-blue-900/20 rounded-lg">
                   <div className="text-xl sm:text-2xl font-bold text-blue-300">{selectedSong.complexity}</div>
-                  <div className="text-xs text-gray-400">Complejidad</div>
+                  <div className="text-xs text-gray-400">{t("music.complexity")}</div>
                 </div>
                 <div className="text-center p-3 bg-green-900/20 rounded-lg">
                   <div className="text-xl sm:text-2xl font-bold text-green-300">{selectedSong.fibonacciMoments.length}</div>
-                  <div className="text-xs text-gray-400">Puntos Fibonacci</div>
+                  <div className="text-xs text-gray-400">{t("music.points")}</div>
                 </div>
               </div>
-              <p className="text-sm text-gray-300">{selectedSong.description}</p>
+              <p className="text-sm text-gray-300">{selectedSong.description[lang]}</p>
             </CardContent>
           </Card>
         </div>

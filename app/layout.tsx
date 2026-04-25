@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import { I18nProvider } from '@/components/i18n-provider'
 import SkipLink from '@/components/SkipLink'
+import ScrollProgress from '@/components/ScrollProgress'
 import './globals.css'
 
 const siteUrl = 'https://dgonzamat.github.io/Tool-Fibonacci'
@@ -142,6 +143,7 @@ export default function RootLayout({
       <body className="overflow-x-hidden">
         <I18nProvider>
           <SkipLink />
+          <ScrollProgress />
           {children}
         </I18nProvider>
         <Script
