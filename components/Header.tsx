@@ -21,9 +21,10 @@ export default function Header() {
   const panelRef = useRef<HTMLDivElement | null>(null)
 
   const navItems = [
-    { href: "#music", id: "music", label: t("nav.music") },
-    { href: "#fibonacci", id: "fibonacci", label: t("nav.fibonacci") },
-    { href: "#education", id: "education", label: t("nav.education") },
+    { href: "/#music", id: "music", label: t("nav.music") },
+    { href: "/#fibonacci", id: "fibonacci", label: t("nav.fibonacci") },
+    { href: "/#education", id: "education", label: t("nav.education") },
+    { href: "/blog/", id: "blog", label: t("nav.blog") },
   ]
 
   // Body scroll lock + ESC handler + focus trap when menu is open
