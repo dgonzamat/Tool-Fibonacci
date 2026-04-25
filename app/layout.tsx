@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
+import { I18nProvider } from '@/components/i18n-provider'
+import SkipLink from '@/components/SkipLink'
 import './globals.css'
 
 const siteUrl = 'https://dgonzamat.github.io/Tool-Fibonacci'
@@ -68,8 +70,14 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/apple-icon.png',
   },
+  manifest: '/manifest.webmanifest',
   verification: {
     google: 'yUd3nome40cMo2VQNkHM-I811d3TdwR5zxuebVSn2wc',
   },
@@ -132,13 +140,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="overflow-x-hidden">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-yellow-500 focus:text-black focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-300"
-        >
-          Saltar al contenido
-        </a>
-        {children}
+        <I18nProvider>
+          <SkipLink />
+          {children}
+        </I18nProvider>
         <Script
           id="ld-json"
           type="application/ld+json"

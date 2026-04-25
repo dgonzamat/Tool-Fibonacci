@@ -6,38 +6,17 @@ import { Play, Pause, ExternalLink, Clock, Zap, Target, Sparkles, TrendingUp } f
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-
-interface FibonacciMoment {
-  time: number
-  description: string
-  significance: string
-}
+import type { FibonacciMoment } from "@/lib/songs"
 
 interface AudioPlayerProps {
   songId: string
   songTitle: string
+  youtubeId: string
   fibonacciPoints: FibonacciMoment[]
   duration: number
 }
 
-interface YouTubePlayer {
-  seekTo: (seconds: number, allowSeekAhead?: boolean) => void
-  playVideo: () => void
-  pauseVideo: () => void
-  getCurrentTime: () => number
-  getPlayerState: () => number
-  destroy: () => void
-  loadVideoById: (videoId: string) => void
-}
-
-declare global {
-  interface Window {
-    YT: any
-    onYouTubeIframeAPIReady: () => void
-  }
-}
-
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciPoints, duration }) => {
+const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, youtubeId, fibonacciPoints, duration }) => {
   const [isClient, setIsClient] = useState(false)
   const [shouldLoad, setShouldLoad] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -45,26 +24,13 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
   const [playerReady, setPlayerReady] = useState(false)
   const [apiLoaded, setApiLoaded] = useState(false)
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null)
-  const playerRef = useRef<YouTubePlayer | null>(null)
-  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+  const playerRef = useRef<YT.Player | null>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const facadeRef = useRef<HTMLDivElement>(null)
   const pendingSeekRef = useRef<number | null>(null)
   const shouldAutoplayRef = useRef<boolean>(false)
 
-  const getYouTubeVideoId = (songId: string): string => {
-    switch (songId) {
-      case "lateralus":
-        return "Y7JG63IuaWs"
-      case "schism":
-        return "80RtBeB61LE"
-      case "fibonacci":
-        return "GIuZUCpm9hc"
-      default:
-        return "Y7JG63IuaWs"
-    }
-  }
-
-  const videoId = getYouTubeVideoId(songId)
+  const videoId = youtubeId
   const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
 
   const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
@@ -164,24 +130,25 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
       }
     }
 
-    const onPlayerStateChange = (event: any) => {
+    const onPlayerStateChange = (event: YT.OnStateChangeEvent) => {
       if (window.YT) {
         setIsPlaying(event.data === window.YT.PlayerState.PLAYING)
       }
     }
 
-    const onPlayerError = (error: any) => {
-      console.error("YouTube player error:", error)
+    const onPlayerError = (event: YT.OnErrorEvent) => {
+      console.error("YouTube player error:", event.data)
     }
 
     const createPlayer = () => {
-      if (!window.YT || !window.YT.Player) return
+      const YT = window.YT
+      if (!YT || !YT.Player) return
       cleanup()
       try {
         const playerElement = document.getElementById(`youtube-player-${songId}`)
         if (!playerElement) return
 
-        playerRef.current = new window.YT.Player(`youtube-player-${songId}`, {
+        playerRef.current = new YT.Player(`youtube-player-${songId}`, {
           height: "200",
           width: "100%",
           videoId,

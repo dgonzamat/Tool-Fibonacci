@@ -7,9 +7,11 @@ import Footer from "@/components/Footer"
 import FibonacciVisualizer from "@/components/FibonacciVisualizer"
 import MusicAnalysis from "@/components/MusicAnalysis"
 import EducationalSection from "@/components/EducationalSection"
+import { useTranslation } from "@/components/i18n-provider"
 
 export default function ToolFibonacciApp() {
   const [loaded, setLoaded] = useState(false)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setLoaded(true)
@@ -32,7 +34,7 @@ export default function ToolFibonacciApp() {
               TOOL <span className="text-yellow-500">×</span> FIBONACCI
             </h1>
             <p className="text-base sm:text-xl md:text-2xl text-gray-400 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed">
-              Explorando los patrones matemáticos y las proporciones áureas en la música de Tool
+              {t("hero.subtitle")}
             </p>
             <div className="h-px bg-gradient-to-r from-transparent via-yellow-500/30 to-transparent" />
           </div>
@@ -41,9 +43,11 @@ export default function ToolFibonacciApp() {
         {/* Fibonacci Visualizer Section */}
         <section id="fibonacci" className="container mx-auto py-10 sm:py-16 scroll-mt-20">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">Visualizador de Fibonacci</h2>
+            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">
+              {t("sections.fibonacci.title")}
+            </h2>
             <p className="text-base sm:text-xl text-gray-400 text-center mb-8 sm:mb-12 px-2">
-              Visualización interactiva de la secuencia de Fibonacci y la proporción áurea
+              {t("sections.fibonacci.subtitle")}
             </p>
             <FibonacciVisualizer />
           </div>
@@ -52,9 +56,11 @@ export default function ToolFibonacciApp() {
         {/* Music Analysis Section */}
         <section id="music" className="container mx-auto py-10 sm:py-16 scroll-mt-20">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">Análisis Musical</h2>
+            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">
+              {t("sections.music.title")}
+            </h2>
             <p className="text-base sm:text-xl text-gray-400 text-center mb-8 sm:mb-12 px-2">
-              Explora cómo Tool incorpora patrones matemáticos en sus composiciones
+              {t("sections.music.subtitle")}
             </p>
             <MusicAnalysis />
           </div>
@@ -63,9 +69,11 @@ export default function ToolFibonacciApp() {
         {/* Educational Section */}
         <section id="education" className="container mx-auto py-10 sm:py-16 scroll-mt-20">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">Fundamentos Matemáticos</h2>
+            <h2 className="text-2xl sm:text-3xl font-light text-center mb-3 sm:mb-4 tracking-wider">
+              {t("sections.education.title")}
+            </h2>
             <p className="text-base sm:text-xl text-gray-400 text-center mb-8 sm:mb-12 px-2">
-              Entendiendo las secuencias de Fibonacci y la proporción áurea en la música
+              {t("sections.education.subtitle")}
             </p>
             <EducationalSection />
           </div>

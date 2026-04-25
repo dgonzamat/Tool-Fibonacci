@@ -1,8 +1,10 @@
 "use client"
 
 import { Sigma, Github, Twitter, Youtube, Mail, Heart } from "lucide-react"
+import { useTranslation } from "./i18n-provider"
 
 export default function Footer() {
+  const { t } = useTranslation()
   return (
     <footer className="w-full py-10 sm:py-16 mt-12 sm:mt-20 border-t border-gray-700 bg-gradient-to-b from-gray-900 to-black">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -25,10 +27,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Explorando los patrones matemáticos en la música de Tool, enfocándose en las secuencias de Fibonacci y las
-              proporciones de la razón áurea a través de visualizaciones recursivas e interactivas.
-            </p>
+            <p className="text-gray-400 text-sm leading-relaxed">{t("footer.tagline")}</p>
 
             <div className="flex items-center space-x-4 text-gray-400">
               {[Github, Twitter, Youtube, Mail].map((Icon, index) => (
@@ -42,14 +41,14 @@ export default function Footer() {
 
           <div>
             <h4 className="text-white font-semibold mb-6 relative">
-              Navegación
+              {t("footer.nav")}
               <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-yellow-500 to-transparent"></div>
             </h4>
             <ul className="space-y-3">
               {[
-                { href: "#music", label: "Análisis Musical" },
-                { href: "#fibonacci", label: "Patrones Fibonacci" },
-                { href: "#education", label: "Recursos Educativos" },
+                { href: "#music", label: t("footer.link.music") },
+                { href: "#fibonacci", label: t("footer.link.fibonacci") },
+                { href: "#education", label: t("footer.link.education") },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <a
@@ -66,7 +65,7 @@ export default function Footer() {
 
           <div>
             <h4 className="text-white font-semibold mb-6 relative">
-              Recursos
+              {t("footer.resources")}
               <div className="absolute -bottom-2 left-0 w-8 h-0.5 bg-gradient-to-r from-yellow-500 to-transparent"></div>
             </h4>
             <ul className="space-y-3">
@@ -83,11 +82,11 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 sm:mt-12 pt-6 sm:pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-gray-400 text-center md:text-left">
-          <p>© 2024 Tool Fibonacci Project. Todos los derechos reservados.</p>
+          <p>{t("footer.copyright")}</p>
           <div className="flex items-center justify-center flex-wrap gap-x-2 gap-y-1">
-            <span>Creado con</span>
-            <Heart className="w-4 h-4 text-yellow-500 animate-pulse" />
-            <span>para entusiastas de las matemáticas y la música</span>
+            <span>{t("footer.created")}</span>
+            <Heart aria-hidden="true" className="w-4 h-4 text-yellow-500 animate-pulse" />
+            <span>{t("footer.created.suffix")}</span>
           </div>
         </div>
       </div>

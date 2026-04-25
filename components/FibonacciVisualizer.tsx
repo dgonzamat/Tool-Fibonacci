@@ -5,20 +5,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Play, Pause, RotateCcw, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-const generateFibonacciSequence = (n: number): number[] => {
-  const sequence: number[] = [0, 1]
-  if (n <= 1) return sequence.slice(0, n + 1)
-
-  for (let i = 2; i <= n; i++) {
-    sequence.push(sequence[i - 1] + sequence[i - 2])
-  }
-
-  return sequence
-}
+import { generateFibonacciSequence, GOLDEN_RATIO } from "@/lib/songs"
 
 export default function FibonacciVisualizer() {
-  const [sequence] = useState(generateFibonacciSequence(15))
+  const [sequence] = useState(() => generateFibonacciSequence(15))
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
   const [speed, setSpeed] = useState(1000)
@@ -41,7 +31,7 @@ export default function FibonacciVisualizer() {
     setIsPlaying(true)
   }
 
-  const goldenRatio = (1 + Math.sqrt(5)) / 2
+  const goldenRatio = GOLDEN_RATIO
 
   // Generate spiral path for SVG
   const generateSpiralPath = () => {
