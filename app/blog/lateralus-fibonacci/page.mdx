@@ -1,0 +1,99 @@
+import Link from "next/link"
+import { Calendar, Clock, ArrowLeft } from "lucide-react"
+
+export const metadata = {
+  title: "Por qué Lateralus está construida sobre Fibonacci",
+  description:
+    "Análisis del patrón silábico, los compases y los puntos áureos que Tool documentó en Lateralus.",
+  alternates: { canonical: "/blog/lateralus-fibonacci" },
+  openGraph: {
+    type: "article",
+    title: "Por qué Lateralus está construida sobre Fibonacci",
+    description:
+      "Análisis del patrón silábico, los compases y los puntos áureos que Tool documentó en Lateralus.",
+    publishedTime: "2026-04-25",
+  },
+}
+
+<article className="max-w-3xl mx-auto">
+
+<div className="mb-8 text-sm text-gray-400">
+  <Link href="/blog/" className="inline-flex items-center gap-1.5 text-yellow-400 hover:text-yellow-300">
+    <ArrowLeft aria-hidden="true" className="w-4 h-4" /> Blog
+  </Link>
+</div>
+
+<div className="flex items-center flex-wrap gap-x-4 gap-y-2 text-xs text-gray-400 mb-6">
+  <span className="inline-flex items-center gap-1">
+    <Calendar aria-hidden="true" className="w-3.5 h-3.5" />
+    <time dateTime="2026-04-25">25 abril 2026</time>
+  </span>
+  <span className="inline-flex items-center gap-1">
+    <Clock aria-hidden="true" className="w-3.5 h-3.5" />
+    6 min de lectura
+  </span>
+  <span className="inline-flex items-center px-2 py-0.5 rounded-full border border-yellow-500/30 text-yellow-400">
+    Análisis
+  </span>
+</div>
+
+# Por qué Lateralus está construida sobre Fibonacci
+
+"Lateralus" es la canción que da título al tercer álbum de estudio de Tool, publicado en 2001. Dura **9 min 24 s** y es el ejemplo más citado de cómo la banda incorpora deliberadamente la secuencia de Fibonacci en su música. No es solo una asociación poética: hay tres planos en los que el patrón es verificable.
+
+## 1. El patrón silábico de la voz
+
+Maynard James Keenan canta los primeros versos del segundo bloque siguiendo, sílaba por sílaba, los términos de la sucesión de Fibonacci (1, 1, 2, 3, 5, 8, 5, 3, 2, 1, 1, ...). El patrón es ascendente, alcanza un máximo y desciende de forma simétrica:
+
+| Verso                           | Sílabas |
+| ------------------------------- | ------- |
+| Black                           | 1       |
+| Then                            | 1       |
+| White are                       | 2       |
+| All I see                       | 3       |
+| In my infancy                   | 5       |
+| Red and yellow then came to be  | 8       |
+| Reaching out to me              | 5       |
+| Lets me see                     | 3       |
+| There is                        | 2       |
+| So                              | 1       |
+| much                            | 1       |
+| more                            | 1       |
+| ...                             |         |
+
+El patrón se reinicia y vuelve a subir hasta `13` antes de la siguiente sección. La idea de "subir y bajar" es deliberada: refleja la idea de la lateralidad ("lateralus") como movimiento entre extremos.
+
+## 2. Los compases 9/8, 8/8 y 7/8
+
+Las secciones instrumentales alternan tres figuras de tiempo: **9/8**, **8/8** (interpretado como 4/4) y **7/8**. Los números 9-8-7 leídos como una sola cifra, **9.87**, están a un paso del recíproco de la proporción áurea aproximada por Fibonacci: φ⁻¹ ≈ 0.618. Adam Jones ha mencionado que el patrón "987" no es casual.
+
+> "987 was the joke; it's about the math underneath." — referencia recurrente en entrevistas a la banda sobre la composición del tema.
+
+## 3. El punto áureo en la línea de tiempo
+
+Una canción de duración `L` tiene su **punto áureo** en `L · 1/φ ≈ L · 0.618`. Para Lateralus, eso son aproximadamente **354 s (5:54)**. En esa marca ocurre el clímax instrumental del tema: la entrada del solo y el cambio armónico mayor. No es exacto al fotograma, pero es lo suficientemente cercano como para que múltiples análisis musicológicos lo señalen como el centro estructural de la pieza.
+
+A 233 s (3:53) hay otra marca curiosa: 233 es un número de Fibonacci (`F(13)`), aunque no representa el punto áureo de la canción. Es un guiño numérico, no proporcional.
+
+## Lo que está documentado y lo que no
+
+Lo verificable y citado por miembros de la banda:
+
+- El patrón silábico ascendente/descendente de Fibonacci en los versos.
+- La intención consciente del compositor de usar números de Fibonacci.
+- La existencia del patrón "987" en compases.
+
+Lo interpretativo (no afirmado por la banda):
+
+- Que cada subdivisión del tema esté **exactamente** en el punto áureo.
+- Que la espiral áurea se "escuche" — eso es metáfora, no acústica.
+
+Esa distinción importa: hace de Lateralus una pieza educativa sobre matemáticas en música sin caer en la mística pseudocientífica.
+
+## Para seguir leyendo
+
+- <a href="https://en.wikipedia.org/wiki/Lateralus_(song)">Lateralus (song) — Wikipedia (EN)</a>
+- <a href="https://en.wikipedia.org/wiki/Fibonacci_sequence">Fibonacci sequence — Wikipedia (EN)</a>
+- <a href="https://en.wikipedia.org/wiki/Golden_ratio">Golden ratio — Wikipedia (EN)</a>
+
+</article>

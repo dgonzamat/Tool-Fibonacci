@@ -52,6 +52,7 @@ export default function Footer() {
                 { href: "#music", label: t("footer.link.music") },
                 { href: "#fibonacci", label: t("footer.link.fibonacci") },
                 { href: "#education", label: t("footer.link.education") },
+                { href: "/blog/", label: t("footer.link.blog") },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <a
