@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Play, Pause, RotateCcw, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { generateFibonacciSequence, GOLDEN_RATIO } from "@/lib/songs"
+import { useTranslation } from "./i18n-provider"
+import { interpolate } from "@/lib/i18n"
 
 export default function FibonacciVisualizer() {
+  const { t } = useTranslation()
   const [sequence] = useState(() => generateFibonacciSequence(15))
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(true)
@@ -79,8 +82,8 @@ export default function FibonacciVisualizer() {
               <span className="text-black font-bold text-lg sm:text-xl">φ</span>
             </div>
             <div className="min-w-0">
-              <h3 className="text-base sm:text-xl font-bold text-white truncate">Secuencia de Fibonacci</h3>
-              <p className="text-xs sm:text-sm text-yellow-300 font-mono">F(n) = F(n-1) + F(n-2)</p>
+              <h3 className="text-base sm:text-xl font-bold text-white truncate">{t("viz.title")}</h3>
+              <p className="text-xs sm:text-sm text-yellow-300 font-mono">{t("header.formula")}</p>
             </div>
           </div>
 
@@ -90,7 +93,7 @@ export default function FibonacciVisualizer() {
               onClick={togglePlayPause}
               variant="outline"
               size="sm"
-              aria-label={isPlaying ? "Pausar" : "Reproducir"}
+              aria-label={isPlaying ? t("controls.pause") : t("controls.play")}
               className="bg-yellow-600 hover:bg-yellow-700 border-yellow-500 text-black"
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -99,7 +102,7 @@ export default function FibonacciVisualizer() {
               onClick={reset}
               variant="outline"
               size="sm"
-              aria-label="Reiniciar"
+              aria-label={t("controls.reset")}
               className="bg-gray-700 hover:bg-gray-600 border-gray-600 text-white"
             >
               <RotateCcw className="w-4 h-4" />
@@ -169,7 +172,7 @@ export default function FibonacciVisualizer() {
 
             <div className="mt-4 text-center">
               <Badge variant="outline" className="text-yellow-400 border-yellow-500/50 bg-yellow-900/20">
-                Espiral Áurea: φ ≈ {goldenRatio.toFixed(6)}
+                {t("viz.spiral.label")}: φ ≈ {goldenRatio.toFixed(6)}
               </Badge>
             </div>
           </div>
@@ -179,7 +182,7 @@ export default function FibonacciVisualizer() {
             {/* Current Number Highlight */}
             <div className="bg-gradient-to-r from-yellow-900/40 to-yellow-800/40 rounded-xl p-4 sm:p-6 border border-yellow-500/30">
               <div className="text-center">
-                <div className="text-xs sm:text-sm text-yellow-300 mb-2">Número Actual</div>
+                <div className="text-xs sm:text-sm text-yellow-300 mb-2">{t("viz.current")}</div>
                 <div className="text-3xl sm:text-4xl font-bold text-yellow-400 mb-2 break-all">{sequence[activeIndex]}</div>
                 <div className="text-xs sm:text-sm text-gray-300">
                   F({activeIndex}) ={" "}
@@ -200,7 +203,10 @@ export default function FibonacciVisualizer() {
                   key={i}
                   type="button"
                   role="listitem"
-                  aria-label={`F(${i}) = ${num}${i === activeIndex ? ", actual" : ""}`}
+                  aria-label={interpolate(
+                    i === activeIndex ? t("viz.cell.label.current") : t("viz.cell.label"),
+                    { i, n: num },
+                  )}
                   aria-current={i === activeIndex ? "true" : undefined}
                   className={cn(
                     "relative flex items-center justify-center rounded-lg transition-all duration-500 border font-mono text-xs sm:text-sm",
@@ -240,14 +246,14 @@ export default function FibonacciVisualizer() {
             {/* Speed Control */}
             <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm text-gray-300">Velocidad de Animación</span>
-                <Zap className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm text-gray-300">{t("viz.speed.label")}</span>
+                <Zap aria-hidden="true" className="w-4 h-4 text-yellow-500" />
               </div>
               <div className="flex space-x-2">
                 {[
-                  { label: "Lenta", value: 1500 },
-                  { label: "Normal", value: 1000 },
-                  { label: "Rápida", value: 500 },
+                  { label: t("viz.speed.slow"), value: 1500 },
+                  { label: t("viz.speed.normal"), value: 1000 },
+                  { label: t("viz.speed.fast"), value: 500 },
                 ].map(({ label, value }) => (
                   <Button
                     key={value}
@@ -269,10 +275,10 @@ export default function FibonacciVisualizer() {
 
             {/* Mathematical Properties */}
             <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl p-4 border border-purple-500/20">
-              <h4 className="text-sm font-semibold text-purple-300 mb-3">Propiedades Recursivas</h4>
+              <h4 className="text-sm font-semibold text-purple-300 mb-3">{t("viz.props.title")}</h4>
               <div className="space-y-2 text-xs text-gray-300">
                 <div className="flex justify-between">
-                  <span>Proporción Áurea (φ):</span>
+                  <span>{t("viz.props.phi")}</span>
                   <span className="text-yellow-300 font-mono">{goldenRatio.toFixed(8)}</span>
                 </div>
                 {activeIndex > 0 && (
@@ -286,7 +292,7 @@ export default function FibonacciVisualizer() {
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span>Progreso:</span>
+                  <span>{t("viz.props.progress")}</span>
                   <span className="text-green-300">
                     {activeIndex + 1}/{sequence.length}
                   </span>

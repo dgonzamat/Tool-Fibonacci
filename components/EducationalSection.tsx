@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import { generateFibonacciSequence, GOLDEN_RATIO } from "@/lib/songs"
+import { useTranslation } from "./i18n-provider"
 
 export default function EducationalSection() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState("sequence")
   const [expandedFaq, setExpandedFaq] = useState<string | null>(null)
 
@@ -17,15 +19,12 @@ export default function EducationalSection() {
   const topics = [
     {
       id: "sequence",
-      title: "La Secuencia de Fibonacci",
-      icon: <Sigma className="w-5 h-5" />,
-      description: "Aprende sobre la secuencia matemática y sus propiedades",
+      title: t("edu.topic.sequence.title"),
+      icon: <Sigma aria-hidden="true" className="w-5 h-5" />,
+      description: t("edu.topic.sequence.description"),
       content: (
         <div className="space-y-6">
-          <p className="text-gray-300 leading-relaxed">
-            La secuencia de Fibonacci es una serie de números donde cada número es la suma de los dos anteriores,
-            generalmente comenzando con 0 y 1. La secuencia comienza:
-          </p>
+          <p className="text-gray-300 leading-relaxed">{t("edu.topic.sequence.intro")}</p>
 
           <div className="flex flex-wrap items-center justify-center p-3 sm:p-4 bg-gray-800/50 rounded-md gap-1.5 sm:gap-2 border border-gray-700">
             {sequence.slice(0, 12).map((num, index) => (
@@ -43,17 +42,14 @@ export default function EducationalSection() {
             ))}
           </div>
 
-          <p className="text-gray-300 leading-relaxed">
-            Esta secuencia aparece en toda la naturaleza, el arte, la arquitectura y la música. En la música de Tool, la
-            secuencia de Fibonacci influye en los patrones rítmicos, compases e incluso en la estructura lírica.
-          </p>
+          <p className="text-gray-300 leading-relaxed">{t("edu.topic.sequence.outro")}</p>
 
           <div className="bg-gray-800/30 p-4 rounded-md border border-gray-700">
-            <h4 className="text-lg text-yellow-500 mb-2">Fórmula Matemática</h4>
-            <p className="text-gray-300 mb-3">La secuencia de Fibonacci puede expresarse matemáticamente como:</p>
+            <h4 className="text-lg text-yellow-500 mb-2">{t("edu.topic.sequence.formula.title")}</h4>
+            <p className="text-gray-300 mb-3">{t("edu.topic.sequence.formula.intro")}</p>
             <div className="p-3 text-center font-mono bg-gray-900/50 rounded border border-gray-600">
-              <div className="text-yellow-500">F(0) = 0, F(1) = 1</div>
-              <div className="text-yellow-500 mt-1">F(n) = F(n-1) + F(n-2) para n &gt; 1</div>
+              <div className="text-yellow-500">{t("edu.topic.sequence.formula.base")}</div>
+              <div className="text-yellow-500 mt-1">{t("edu.topic.sequence.formula.rule")}</div>
             </div>
           </div>
         </div>
@@ -61,34 +57,24 @@ export default function EducationalSection() {
     },
     {
       id: "golden-ratio",
-      title: "La Proporción Áurea",
-      icon: <Sigma className="w-5 h-5" />,
-      description: "Entiende la proporción divina y su relación con Fibonacci",
+      title: t("edu.topic.golden.title"),
+      icon: <Sigma aria-hidden="true" className="w-5 h-5" />,
+      description: t("edu.topic.golden.description"),
       content: (
         <div className="space-y-6">
-          <p className="text-gray-300 leading-relaxed">
-            La proporción áurea (aproximadamente 1.618...) es un número irracional representado por la letra griega phi
-            (φ). Cuando se visualiza, crea proporciones estéticamente agradables que aparecen en el arte y la
-            naturaleza.
-          </p>
+          <p className="text-gray-300 leading-relaxed">{t("edu.topic.golden.intro")}</p>
 
           <div className="bg-gray-800 p-3 sm:p-4 rounded-md text-center border border-gray-700 overflow-x-auto">
-            <span className="text-base sm:text-xl font-mono text-yellow-500 break-all">φ = (1 + √5)/2 ≈ {goldenRatio.toFixed(8)}...</span>
+            <span className="text-base sm:text-xl font-mono text-yellow-500 break-all">
+              φ = (1 + √5)/2 ≈ {goldenRatio.toFixed(8)}...
+            </span>
           </div>
 
-          <p className="text-gray-300 leading-relaxed">
-            A medida que progresa la secuencia de Fibonacci, la proporción entre números consecutivos se acerca a la
-            proporción áurea. Esta relación es clave para entender cómo Tool incorpora estos conceptos matemáticos en su
-            música.
-          </p>
+          <p className="text-gray-300 leading-relaxed">{t("edu.topic.golden.middle")}</p>
 
           <div className="bg-gray-800/30 p-4 rounded-md border border-gray-700">
-            <h4 className="text-lg text-yellow-500 mb-3">Proporción Áurea en la Música</h4>
-            <p className="text-gray-300 mb-4">
-              En música, la proporción áurea puede usarse para determinar momentos clave para transiciones, clímax o
-              cambios temáticos. Para una canción de duración L, el punto de proporción áurea estaría aproximadamente en
-              L/φ desde el final, o 0.618 × L desde el principio.
-            </p>
+            <h4 className="text-lg text-yellow-500 mb-3">{t("edu.topic.golden.music.title")}</h4>
+            <p className="text-gray-300 mb-4">{t("edu.topic.golden.music.body")}</p>
 
             <div className="relative h-8 bg-gray-700 rounded-md overflow-hidden">
               <div
@@ -111,24 +97,9 @@ export default function EducationalSection() {
   ]
 
   const faqs = [
-    {
-      id: "faq-1",
-      question: "¿Tool usó intencionalmente Fibonacci en su música?",
-      answer:
-        "Sí, Tool ha confirmado en entrevistas que incorporan deliberadamente conceptos matemáticos en sus composiciones. Maynard James Keenan y Adam Jones han mencionado específicamente la secuencia de Fibonacci y la proporción áurea como inspiraciones para su trabajo, especialmente en el álbum Lateralus.",
-    },
-    {
-      id: "faq-2",
-      question: "¿Cómo puedo identificar patrones Fibonacci en la música?",
-      answer:
-        "Escucha compases que usen números Fibonacci (1, 2, 3, 5, 8, 13), patrones rítmicos que sigan estas proporciones, y transiciones clave que ocurran en puntos de proporción áurea en la duración de la canción. En la música de Tool, estos patrones se encuentran a menudo en patrones de batería, riffs de guitarra y estructuras de canciones.",
-    },
-    {
-      id: "faq-3",
-      question: "¿Hay otras bandas que usen conceptos matemáticos?",
-      answer:
-        "Sí, muchas bandas progresivas y experimentales incorporan patrones matemáticos. Ejemplos incluyen Meshuggah (polirritmias complejas), Animals as Leaders (patrones geométricos), King Crimson (compases matemáticos), y Radiohead (proporción áurea en estructuras de canciones). Compositores clásicos como Bach y Mozart también usaron principios matemáticos extensivamente.",
-    },
+    { id: "faq-1", question: t("edu.faq.q1"), answer: t("edu.faq.a1") },
+    { id: "faq-2", question: t("edu.faq.q2"), answer: t("edu.faq.a2") },
+    { id: "faq-3", question: t("edu.faq.q3"), answer: t("edu.faq.a3") },
   ]
 
   const activeTopic = topics.find((topic) => topic.id === activeTab)
@@ -136,7 +107,7 @@ export default function EducationalSection() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
       <div className="lg:col-span-1">
-        <h3 className="text-lg sm:text-xl text-yellow-500 mb-4">Conceptos Matemáticos</h3>
+        <h3 className="text-lg sm:text-xl text-yellow-500 mb-4">{t("edu.concepts")}</h3>
 
         <div className="space-y-3">
           {topics.map((topic) => (
@@ -172,35 +143,23 @@ export default function EducationalSection() {
         </div>
 
         <div className="mt-8 bg-gray-900/50 p-4 rounded-md border border-gray-700">
-          <h4 className="text-white mb-3 font-medium">Recursos Adicionales</h4>
+          <h4 className="text-white mb-3 font-medium">{t("edu.resources.title")}</h4>
           <ul className="space-y-2">
-            <li>
-              <a
-                href="#"
-                className="flex items-center text-gray-400 hover:text-yellow-500 transition-colors group text-sm"
-              >
-                <BookOpen className="w-4 h-4 mr-2 text-gray-500 group-hover:text-yellow-500" />
-                <span>Guía de Teoría Musical</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center text-gray-400 hover:text-yellow-500 transition-colors group text-sm"
-              >
-                <BookOpen className="w-4 h-4 mr-2 text-gray-500 group-hover:text-yellow-500" />
-                <span>Matemáticas del Ritmo</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center text-gray-400 hover:text-yellow-500 transition-colors group text-sm"
-              >
-                <BookOpen className="w-4 h-4 mr-2 text-gray-500 group-hover:text-yellow-500" />
-                <span>Filosofía Musical de Tool</span>
-              </a>
-            </li>
+            {[
+              t("edu.resources.theory"),
+              t("edu.resources.rhythm"),
+              t("edu.resources.philosophy"),
+            ].map((label) => (
+              <li key={label}>
+                <a
+                  href="#"
+                  className="flex items-center text-gray-400 hover:text-yellow-500 transition-colors group text-sm"
+                >
+                  <BookOpen aria-hidden="true" className="w-4 h-4 mr-2 text-gray-500 group-hover:text-yellow-500" />
+                  <span>{label}</span>
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -222,7 +181,7 @@ export default function EducationalSection() {
             {activeTopic?.content}
 
             <div className="mt-6 sm:mt-8 pt-6 border-t border-gray-700">
-              <h4 className="text-base sm:text-lg text-yellow-500 mb-4">Preguntas Frecuentes</h4>
+              <h4 className="text-base sm:text-lg text-yellow-500 mb-4">{t("edu.faq.title")}</h4>
 
               <div className="space-y-3">
                 {faqs.map((faq) => (
@@ -236,6 +195,7 @@ export default function EducationalSection() {
                       >
                         <span className="font-medium text-white text-sm sm:text-base pr-3 flex-1 min-w-0">{faq.question}</span>
                         <ChevronDown
+                          aria-hidden="true"
                           className={cn(
                             "w-5 h-5 transition-transform duration-300 flex-shrink-0",
                             expandedFaq === faq.id && "transform rotate-180",
@@ -258,11 +218,11 @@ export default function EducationalSection() {
 
         <div className="mt-6 p-4 bg-gray-900/50 rounded-md flex items-center justify-between gap-3 border border-gray-700 flex-wrap">
           <div className="flex items-center min-w-0">
-            <BookOpen className="w-5 h-5 text-yellow-500 mr-2 flex-shrink-0" />
-            <span className="text-gray-300 text-sm sm:text-base">¿Quieres aprender más sobre las matemáticas de la música?</span>
+            <BookOpen aria-hidden="true" className="w-5 h-5 text-yellow-500 mr-2 flex-shrink-0" />
+            <span className="text-gray-300 text-sm sm:text-base">{t("edu.cta.text")}</span>
           </div>
           <Button variant="outline" size="sm" className="border-yellow-500/50 text-yellow-500 hover:bg-yellow-500/10 flex-shrink-0">
-            Explorar recursos
+            {t("edu.cta.button")}
           </Button>
         </div>
       </div>

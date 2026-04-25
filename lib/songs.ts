@@ -1,3 +1,16 @@
+import type { Lang } from "./i18n"
+
+export interface Localized {
+  es: string
+  en: string
+}
+
+export interface LocalizedFibonacciMoment {
+  time: number
+  description: Localized
+  significance: Localized
+}
+
 export interface FibonacciMoment {
   time: number
   description: string
@@ -10,11 +23,11 @@ export interface Song {
   album: string
   year: number
   duration: number
-  description: string
   complexity: number
   youtubeId: string
-  fibonacciMoments: FibonacciMoment[]
-  patterns: string[]
+  description: Localized
+  patterns: { es: string[]; en: string[] }
+  fibonacciMoments: LocalizedFibonacciMoment[]
 }
 
 export const toolSongs: Song[] = [
@@ -24,37 +37,71 @@ export const toolSongs: Song[] = [
     album: "Lateralus",
     year: 2001,
     duration: 573,
-    youtubeId: "Y7JG63IuaWs",
-    description:
-      "Una obra maestra que utiliza la secuencia de Fibonacci en su estructura lírica y rítmica, creando una experiencia musical matemáticamente perfecta.",
     complexity: 9.8,
+    youtubeId: "Y7JG63IuaWs",
+    description: {
+      es: "Una obra maestra que utiliza la secuencia de Fibonacci en su estructura lírica y rítmica, creando una experiencia musical matemáticamente perfecta.",
+      en: "A masterpiece that uses the Fibonacci sequence in its lyrical and rhythmic structure, creating a mathematically perfect musical experience.",
+    },
+    patterns: {
+      es: [
+        "Estructura lírica basada en secuencia de Fibonacci",
+        "Cambios de tiempo en proporciones áureas",
+        "87 compases divididos según números de Fibonacci",
+        "Patrones rítmicos que siguen la espiral dorada",
+      ],
+      en: [
+        "Lyric structure based on the Fibonacci sequence",
+        "Time-signature changes following golden-ratio proportions",
+        "87 bars divided according to Fibonacci numbers",
+        "Rhythmic patterns that trace the golden spiral",
+      ],
+    },
     fibonacciMoments: [
       {
         time: 97,
-        description: "Inicio del patrón Fibonacci en la lírica",
-        significance: "Las sílabas siguen la secuencia: 1, 1, 2, 3, 5, 8...",
+        description: {
+          es: "Inicio del patrón Fibonacci en la lírica",
+          en: "Start of the Fibonacci pattern in the lyrics",
+        },
+        significance: {
+          es: "Las sílabas siguen la secuencia: 1, 1, 2, 3, 5, 8...",
+          en: "Syllables follow the sequence: 1, 1, 2, 3, 5, 8...",
+        },
       },
       {
         time: 233,
-        description: "Cambio de tiempo siguiendo proporción áurea",
-        significance: "El ritmo cambia en el punto áureo de la canción",
+        description: {
+          es: "Cambio de tiempo siguiendo proporción áurea",
+          en: "Time-signature change at the golden-ratio point",
+        },
+        significance: {
+          es: "El ritmo cambia en el punto áureo de la canción",
+          en: "The rhythm shifts at the song's golden-ratio point",
+        },
       },
       {
         time: 354,
-        description: "Clímax matemático",
-        significance: "Convergencia de todos los patrones Fibonacci",
+        description: {
+          es: "Clímax matemático",
+          en: "Mathematical climax",
+        },
+        significance: {
+          es: "Convergencia de todos los patrones Fibonacci",
+          en: "Convergence of every Fibonacci pattern",
+        },
       },
       {
         time: 462,
-        description: "Resolución en espiral",
-        significance: "La música se desenrolla siguiendo la espiral de Fibonacci",
+        description: {
+          es: "Resolución en espiral",
+          en: "Spiral resolution",
+        },
+        significance: {
+          es: "La música se desenrolla siguiendo la espiral de Fibonacci",
+          en: "The music unwinds along the Fibonacci spiral",
+        },
       },
-    ],
-    patterns: [
-      "Estructura lírica basada en secuencia de Fibonacci",
-      "Cambios de tiempo en proporciones áureas",
-      "87 compases divididos según números de Fibonacci",
-      "Patrones rítmicos que siguen la espiral dorada",
     ],
   },
   {
@@ -63,37 +110,59 @@ export const toolSongs: Song[] = [
     album: "Lateralus",
     year: 2001,
     duration: 547,
-    youtubeId: "80RtBeB61LE",
-    description:
-      "Una exploración de las divisiones y reunificaciones, con patrones matemáticos que reflejan la naturaleza fractal de las relaciones humanas.",
     complexity: 8.7,
+    youtubeId: "80RtBeB61LE",
+    description: {
+      es: "Una exploración de las divisiones y reunificaciones, con patrones matemáticos que reflejan la naturaleza fractal de las relaciones humanas.",
+      en: "An exploration of division and reunification, with mathematical patterns that mirror the fractal nature of human relationships.",
+    },
+    patterns: {
+      es: [
+        "Compases irregulares basados en números de Fibonacci",
+        "Divisiones rítmicas que siguen la proporción áurea",
+        "Estructura armónica en espiral",
+        "Patrones de repetición matemáticamente precisos",
+      ],
+      en: [
+        "Irregular bars based on Fibonacci numbers",
+        "Rhythmic divisions following the golden ratio",
+        "Spiral harmonic structure",
+        "Repetition patterns with mathematical precision",
+      ],
+    },
     fibonacciMoments: [
       {
         time: 89,
-        description: "Primera división rítmica",
-        significance: "El compás se divide siguiendo proporciones Fibonacci",
+        description: { es: "Primera división rítmica", en: "First rhythmic division" },
+        significance: {
+          es: "El compás se divide siguiendo proporciones Fibonacci",
+          en: "The meter splits along Fibonacci proportions",
+        },
       },
       {
         time: 178,
-        description: "Punto de tensión máxima",
-        significance: "Ubicado en el 32.5% de la canción (proporción áurea)",
+        description: { es: "Punto de tensión máxima", en: "Peak tension point" },
+        significance: {
+          es: "Ubicado en el 32.5% de la canción (proporción áurea)",
+          en: "Located at 32.5% of the song (golden-ratio point)",
+        },
       },
       {
         time: 337,
-        description: "Reunificación armónica",
-        significance: "Los elementos se recombinan en patrones Fibonacci",
+        description: { es: "Reunificación armónica", en: "Harmonic reunification" },
+        significance: {
+          es: "Los elementos se recombinan en patrones Fibonacci",
+          en: "Elements recombine in Fibonacci patterns",
+        },
       },
       {
         time: 445,
-        description: "Resolución final",
-        significance: "Cierre que completa la secuencia matemática",
+        description: { es: "Resolución final", en: "Final resolution" },
+        significance: {
+          es: "Cierre que completa la secuencia matemática",
+          en: "Closure that completes the mathematical sequence",
+        },
       },
-    ],
-    patterns: [
-      "Compases irregulares basados en números de Fibonacci",
-      "Divisiones rítmicas que siguen la proporción áurea",
-      "Estructura armónica en espiral",
-      "Patrones de repetición matemáticamente precisos",
     ],
   },
   {
@@ -102,40 +171,73 @@ export const toolSongs: Song[] = [
     album: "Ænima",
     year: 1996,
     duration: 366,
-    youtubeId: "GIuZUCpm9hc",
-    description:
-      "Una canción sobre evolución y transformación, con 46 cromosomas + 2 representando el siguiente paso evolutivo, estructurada con patrones matemáticos.",
     complexity: 8.2,
+    youtubeId: "GIuZUCpm9hc",
+    description: {
+      es: "Una canción sobre evolución y transformación, con 46 cromosomas + 2 representando el siguiente paso evolutivo, estructurada con patrones matemáticos.",
+      en: "A song about evolution and transformation, with 46 chromosomes + 2 representing the next evolutionary step, built around mathematical patterns.",
+    },
+    patterns: {
+      es: [
+        "46 + 2 cromosomas como base conceptual",
+        "Progresiones armónicas en secuencia Fibonacci",
+        "Estructura temporal basada en proporción áurea",
+        "Patrones rítmicos que evocan evolución",
+      ],
+      en: [
+        "46 + 2 chromosomes as the conceptual core",
+        "Harmonic progressions in Fibonacci sequence",
+        "Time structure built on the golden ratio",
+        "Rhythmic patterns evoking evolution",
+      ],
+    },
     fibonacciMoments: [
       {
         time: 58,
-        description: "Introducción del patrón principal",
-        significance: "Establecimiento del ritmo base en Fibonacci",
+        description: { es: "Introducción del patrón principal", en: "Introduction of the main pattern" },
+        significance: {
+          es: "Establecimiento del ritmo base en Fibonacci",
+          en: "Establishment of the Fibonacci-based base rhythm",
+        },
       },
       {
         time: 144,
-        description: "Primera transformación",
-        significance: "Cambio estructural en el punto áureo",
+        description: { es: "Primera transformación", en: "First transformation" },
+        significance: {
+          es: "Cambio estructural en el punto áureo",
+          en: "Structural change at the golden-ratio point",
+        },
       },
       {
         time: 226,
-        description: "Clímax evolutivo",
-        significance: "Momento de máxima intensidad matemática",
+        description: { es: "Clímax evolutivo", en: "Evolutionary climax" },
+        significance: {
+          es: "Momento de máxima intensidad matemática",
+          en: "Moment of peak mathematical intensity",
+        },
       },
       {
         time: 318,
-        description: "Resolución y transcendencia",
-        significance: "Culminación del proceso de transformación",
+        description: { es: "Resolución y transcendencia", en: "Resolution and transcendence" },
+        significance: {
+          es: "Culminación del proceso de transformación",
+          en: "Culmination of the transformation process",
+        },
       },
-    ],
-    patterns: [
-      "46 + 2 cromosomas como base conceptual",
-      "Progresiones armónicas en secuencia Fibonacci",
-      "Estructura temporal basada en proporción áurea",
-      "Patrones rítmicos que evocan evolución",
     ],
   },
 ]
+
+export function localizeMoments(
+  moments: LocalizedFibonacciMoment[],
+  lang: Lang,
+): FibonacciMoment[] {
+  return moments.map((m) => ({
+    time: m.time,
+    description: m.description[lang],
+    significance: m.significance[lang],
+  }))
+}
 
 export const generateFibonacciSequence = (n: number): number[] => {
   const sequence: number[] = [0, 1]

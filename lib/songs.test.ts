@@ -57,4 +57,23 @@ describe("toolSongs", () => {
       expect(song.complexity).toBeLessThanOrEqual(10)
     }
   })
+
+  it("each song has Spanish and English translations for description", () => {
+    for (const song of toolSongs) {
+      expect(song.description.es.length).toBeGreaterThan(0)
+      expect(song.description.en.length).toBeGreaterThan(0)
+    }
+  })
+
+  it("patterns and fibonacci moments are translated in both languages", () => {
+    for (const song of toolSongs) {
+      expect(song.patterns.es.length).toBe(song.patterns.en.length)
+      for (const moment of song.fibonacciMoments) {
+        expect(moment.description.es.length).toBeGreaterThan(0)
+        expect(moment.description.en.length).toBeGreaterThan(0)
+        expect(moment.significance.es.length).toBeGreaterThan(0)
+        expect(moment.significance.en.length).toBeGreaterThan(0)
+      }
+    }
+  })
 })
