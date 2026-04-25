@@ -403,10 +403,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                     <div
                       key={index}
                       className="relative flex items-start gap-3 sm:gap-4"
-                      onMouseEnter={() => setHoveredPoint(index)}
-                      onMouseLeave={() => setHoveredPoint(null)}
                     >
                       <div
+                        aria-hidden="true"
                         className={`relative z-10 flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-[3px] transition-all duration-300 ${
                           isNearPoint
                             ? "bg-gradient-to-r from-yellow-400 to-yellow-500 border-yellow-300 shadow-lg shadow-yellow-500/50 scale-110"
@@ -422,8 +421,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                         />
                       </div>
 
-                      <div
-                        className={`flex-1 min-w-0 cursor-pointer transition-all duration-300 ${
+                      <button
+                        type="button"
+                        aria-label={`Saltar a ${formatTime(point.time)}: ${point.description}`}
+                        onMouseEnter={() => setHoveredPoint(index)}
+                        onMouseLeave={() => setHoveredPoint(null)}
+                        onFocus={() => setHoveredPoint(index)}
+                        onBlur={() => setHoveredPoint(null)}
+                        className={`flex-1 min-w-0 text-left transition-all duration-300 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 ${
                           hoveredPoint === index ? "sm:transform sm:scale-105" : ""
                         }`}
                         onClick={() => seekToTime(point.time)}
@@ -496,7 +501,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                             )}
                           </CardContent>
                         </Card>
-                      </div>
+                      </button>
                     </div>
                   )
                 })}

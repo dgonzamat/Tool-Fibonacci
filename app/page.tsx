@@ -19,7 +19,7 @@ export default function ToolFibonacciApp() {
     <div className="min-h-screen bg-black text-white">
       <Header />
 
-      <main className="pt-16 sm:pt-20">
+      <main id="main" className="pt-16 sm:pt-20">
         {/* Hero Section */}
         <section className="container py-12 sm:py-16 md:py-24 mx-auto">
           <div
