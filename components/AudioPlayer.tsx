@@ -39,6 +39,7 @@ declare global {
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciPoints, duration }) => {
   const [isClient, setIsClient] = useState(false)
+  const [shouldLoad, setShouldLoad] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [playerReady, setPlayerReady] = useState(false)
@@ -46,9 +47,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
   const [hoveredPoint, setHoveredPoint] = useState<number | null>(null)
   const playerRef = useRef<YouTubePlayer | null>(null)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
-  const playerContainerRef = useRef<HTMLDivElement>(null)
+  const facadeRef = useRef<HTMLDivElement>(null)
+  const pendingSeekRef = useRef<number | null>(null)
+  const shouldAutoplayRef = useRef<boolean>(false)
 
-  // YouTube video IDs
   const getYouTubeVideoId = (songId: string): string => {
     switch (songId) {
       case "lateralus":
@@ -63,18 +65,15 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
   }
 
   const videoId = getYouTubeVideoId(songId)
+  const thumbnailUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
 
-  // Fibonacci sequence for visual elements
   const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
-  // Icons for different Fibonacci points
   const getPointIcon = (index: number) => {
     const icons = [Sparkles, Zap, Target, TrendingUp]
-    const IconComponent = icons[index % icons.length]
-    return IconComponent
+    return icons[index % icons.length]
   }
 
-  // Format time helper
   const formatTime = (seconds: number): string => {
     if (isNaN(seconds) || seconds < 0) return "0:00"
     const mins = Math.floor(seconds / 60)
@@ -82,68 +81,110 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
     return `${mins}:${secs.toString().padStart(2, "0")}`
   }
 
-  // Cleanup function
-  const cleanup = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current)
-      intervalRef.current = null
-    }
-    if (playerRef.current) {
-      try {
-        playerRef.current.destroy()
-      } catch (error) {
-        console.error("Error destroying player:", error)
-      }
-      playerRef.current = null
-    }
-    setPlayerReady(false)
-    setIsPlaying(false)
-    setCurrentTime(0)
-  }
-
-  // Initialize YouTube API
   useEffect(() => {
     setIsClient(true)
+  }, [])
 
-    const initializeYouTubeAPI = () => {
-      if (window.YT && window.YT.Player) {
-        setApiLoaded(true)
-        createPlayer()
-        return
-      }
+  // Lazy-load: only flag for loading when player area enters viewport
+  useEffect(() => {
+    if (!isClient || shouldLoad) return
+    const el = facadeRef.current
+    if (!el) return
 
-      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
-        const tag = document.createElement("script")
-        tag.src = "https://www.youtube.com/iframe_api"
-        tag.async = true
-        const firstScriptTag = document.getElementsByTagName("script")[0]
-        firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag)
-      }
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldLoad(true)
+      return
+    }
 
-      window.onYouTubeIframeAPIReady = () => {
-        setApiLoaded(true)
-        createPlayer()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "300px" },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [isClient, shouldLoad])
+
+  // Initialize YouTube API and create player only after shouldLoad becomes true
+  useEffect(() => {
+    if (!isClient || !shouldLoad) return
+
+    const cleanup = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
       }
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy()
+        } catch (error) {
+          console.error("Error destroying player:", error)
+        }
+        playerRef.current = null
+      }
+      setPlayerReady(false)
+      setIsPlaying(false)
+      setCurrentTime(0)
+    }
+
+    const onPlayerReady = () => {
+      setPlayerReady(true)
+
+      if (intervalRef.current) clearInterval(intervalRef.current)
+      intervalRef.current = setInterval(() => {
+        if (playerRef.current && typeof playerRef.current.getCurrentTime === "function") {
+          try {
+            const time = playerRef.current.getCurrentTime()
+            if (!isNaN(time)) setCurrentTime(time)
+          } catch (error) {
+            console.error("Error getting current time:", error)
+          }
+        }
+      }, 1000)
+
+      if (pendingSeekRef.current !== null && playerRef.current) {
+        try {
+          playerRef.current.seekTo(pendingSeekRef.current, true)
+        } catch (error) {
+          console.error("Error applying pending seek:", error)
+        }
+        pendingSeekRef.current = null
+      }
+      if (shouldAutoplayRef.current && playerRef.current) {
+        try {
+          playerRef.current.playVideo()
+        } catch (error) {
+          console.error("Error autoplaying:", error)
+        }
+        shouldAutoplayRef.current = false
+      }
+    }
+
+    const onPlayerStateChange = (event: any) => {
+      if (window.YT) {
+        setIsPlaying(event.data === window.YT.PlayerState.PLAYING)
+      }
+    }
+
+    const onPlayerError = (error: any) => {
+      console.error("YouTube player error:", error)
     }
 
     const createPlayer = () => {
       if (!window.YT || !window.YT.Player) return
-
       cleanup()
-
       try {
         const playerElement = document.getElementById(`youtube-player-${songId}`)
-        if (!playerElement) {
-          console.error("Player element not found:", `youtube-player-${songId}`)
-          return
-        }
-
-        console.log("Creating new YouTube player for:", songId, "with video:", videoId)
+        if (!playerElement) return
 
         playerRef.current = new window.YT.Player(`youtube-player-${songId}`, {
           height: "200",
           width: "100%",
-          videoId: videoId,
+          videoId,
           playerVars: {
             autoplay: 0,
             controls: 1,
@@ -163,80 +204,58 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
       }
     }
 
-    const onPlayerReady = (event: any) => {
-      console.log("YouTube player ready for", songId, "with video", videoId)
-      setPlayerReady(true)
-
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+    if (window.YT && window.YT.Player) {
+      setApiLoaded(true)
+      createPlayer()
+    } else {
+      if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
+        const tag = document.createElement("script")
+        tag.src = "https://www.youtube.com/iframe_api"
+        tag.async = true
+        const firstScriptTag = document.getElementsByTagName("script")[0]
+        firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag)
       }
-
-      intervalRef.current = setInterval(() => {
-        if (playerRef.current && typeof playerRef.current.getCurrentTime === "function") {
-          try {
-            const time = playerRef.current.getCurrentTime()
-            if (!isNaN(time)) {
-              setCurrentTime(time)
-            }
-          } catch (error) {
-            console.error("Error getting current time:", error)
-          }
-        }
-      }, 1000)
-    }
-
-    const onPlayerStateChange = (event: any) => {
-      if (window.YT) {
-        const isCurrentlyPlaying = event.data === window.YT.PlayerState.PLAYING
-        setIsPlaying(isCurrentlyPlaying)
+      window.onYouTubeIframeAPIReady = () => {
+        setApiLoaded(true)
+        createPlayer()
       }
-    }
-
-    const onPlayerError = (error: any) => {
-      console.error("YouTube player error:", error)
-    }
-
-    if (isClient) {
-      initializeYouTubeAPI()
     }
 
     return cleanup
-  }, [songId, videoId, isClient])
+  }, [songId, videoId, isClient, shouldLoad])
 
-  // Control functions
   const togglePlayPause = () => {
+    if (!shouldLoad) {
+      shouldAutoplayRef.current = true
+      setShouldLoad(true)
+      return
+    }
     if (!playerRef.current || !playerReady) return
-
     try {
-      if (isPlaying) {
-        playerRef.current.pauseVideo()
-      } else {
-        playerRef.current.playVideo()
-      }
+      if (isPlaying) playerRef.current.pauseVideo()
+      else playerRef.current.playVideo()
     } catch (error) {
       console.error("Error toggling play/pause:", error)
     }
   }
 
   const seekToTime = (seconds: number) => {
-    console.log(`Seeking to ${seconds} seconds`)
-
-    if (!playerRef.current || !playerReady) {
-      console.log("Player not ready, opening YouTube with timestamp")
-      const url = `https://www.youtube.com/watch?v=${videoId}&t=${Math.floor(seconds)}s`
-      window.open(url, "_blank")
+    if (!shouldLoad) {
+      pendingSeekRef.current = seconds
+      shouldAutoplayRef.current = true
+      setShouldLoad(true)
       return
     }
-
+    if (!playerRef.current || !playerReady) {
+      pendingSeekRef.current = seconds
+      shouldAutoplayRef.current = true
+      return
+    }
     try {
       playerRef.current.seekTo(seconds, true)
-      console.log(`Successfully seeked to ${seconds}s`)
-
       setTimeout(() => {
-        if (playerRef.current) {
-          playerRef.current.playVideo()
-        }
-      }, 500)
+        playerRef.current?.playVideo()
+      }, 300)
     } catch (error) {
       console.error("Error seeking to time:", error)
       const url = `https://www.youtube.com/watch?v=${videoId}&t=${Math.floor(seconds)}s`
@@ -244,9 +263,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
     }
   }
 
-  const getYouTubeUrl = () => {
-    return `https://www.youtube.com/watch?v=${videoId}`
-  }
+  const getYouTubeUrl = () => `https://www.youtube.com/watch?v=${videoId}`
 
   if (!isClient) {
     return (
@@ -285,21 +302,54 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
             </a>
           </div>
 
-          {/* YouTube Player */}
+          {/* YouTube Player / Facade */}
           <div className="relative">
             <div
-              ref={playerContainerRef}
-              id={`youtube-player-${songId}`}
-              key={`player-${songId}-${videoId}`}
-              className="w-full rounded-xl overflow-hidden bg-gray-800 shadow-lg"
+              ref={facadeRef}
+              className="relative w-full rounded-xl overflow-hidden bg-gray-800 shadow-lg"
               style={{ aspectRatio: "16/9", minHeight: "200px" }}
             >
-              {!apiLoaded && (
-                <div className="flex items-center justify-center h-full text-gray-400">
-                  <div className="text-center">
-                    <div className="animate-spin w-8 h-8 border-3 border-gray-600 border-t-yellow-500 rounded-full mx-auto mb-3"></div>
-                    <div className="text-lg">Cargando reproductor de YouTube...</div>
+              {!shouldLoad ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    shouldAutoplayRef.current = true
+                    setShouldLoad(true)
+                  }}
+                  aria-label={`Cargar reproductor de ${songTitle}`}
+                  className="group absolute inset-0 w-full h-full"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={thumbnailUrl}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/60 to-transparent">
+                    <div className="flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600/90 group-hover:bg-red-600 transition-all shadow-2xl group-hover:scale-110">
+                      <Play className="w-7 h-7 sm:w-9 sm:h-9 text-white fill-white ml-1" />
+                    </div>
                   </div>
+                  <div className="absolute bottom-3 left-3 right-3 text-left">
+                    <span className="text-xs sm:text-sm text-white/90 font-medium drop-shadow">Tocar para cargar</span>
+                  </div>
+                </button>
+              ) : (
+                <div
+                  id={`youtube-player-${songId}`}
+                  key={`player-${songId}-${videoId}`}
+                  className="w-full h-full"
+                >
+                  {!apiLoaded && (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      <div className="text-center">
+                        <div className="animate-spin w-8 h-8 border-[3px] border-gray-600 border-t-yellow-500 rounded-full mx-auto mb-3"></div>
+                        <div className="text-base sm:text-lg">Cargando reproductor de YouTube…</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -313,7 +363,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
               size="lg"
               aria-label={isPlaying ? "Pausar" : "Reproducir"}
               className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 border-purple-500 text-white shadow-lg"
-              disabled={!playerReady}
+              disabled={shouldLoad && !playerReady}
             >
               {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </Button>
@@ -321,7 +371,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
               <div className="text-base sm:text-lg font-mono text-white">
                 {formatTime(currentTime)} / {formatTime(duration)}
               </div>
-              {!playerReady && <div className="text-xs text-yellow-400 mt-1">Preparando reproductor...</div>}
+              {shouldLoad && !playerReady && <div className="text-xs text-yellow-400 mt-1">Preparando reproductor...</div>}
             </div>
           </div>
 
@@ -339,12 +389,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
               </div>
             </div>
 
-            {/* Timeline */}
             <div className="relative">
-              {/* Timeline line */}
               <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-yellow-500 via-yellow-400 to-yellow-600"></div>
 
-              {/* Fibonacci Points */}
               <div className="space-y-4">
                 {fibonacciPoints.map((point, index) => {
                   const isNearPoint = Math.abs(currentTime - point.time) < 10
@@ -359,7 +406,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                       onMouseEnter={() => setHoveredPoint(index)}
                       onMouseLeave={() => setHoveredPoint(null)}
                     >
-                      {/* Timeline dot */}
                       <div
                         className={`relative z-10 flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 sm:border-[3px] transition-all duration-300 ${
                           isNearPoint
@@ -376,7 +422,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                         />
                       </div>
 
-                      {/* Content Card */}
                       <div
                         className={`flex-1 min-w-0 cursor-pointer transition-all duration-300 ${
                           hoveredPoint === index ? "sm:transform sm:scale-105" : ""
@@ -443,7 +488,6 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ songId, songTitle, fibonacciP
                               </p>
                             </div>
 
-                            {/* Progress indicator */}
                             {isNearPoint && (
                               <div className="mt-3 flex items-center space-x-2 text-yellow-300">
                                 <Sparkles className="w-4 h-4 animate-pulse" />
